@@ -10,10 +10,10 @@ namespace Com.Bateeq.Service.Core.WebApi.Helpers
     {
         public Dictionary<string, object> Result { get; set; }
 
-        public ResultFormatter(InternalMessage ApiVersion, int StatusCode, string Message)
+        public ResultFormatter(InternalMessage apiVersion, int statusCode, string message)
         {
             Result = new Dictionary<string, object>();
-            AddResponseInformation(Result, ApiVersion, StatusCode, Message);
+            AddResponseInformation(Result, apiVersion, statusCode, message);
         }
 
         public Dictionary<string, object> Ok()
@@ -21,9 +21,9 @@ namespace Com.Bateeq.Service.Core.WebApi.Helpers
             return Result;
         }
 
-        public Dictionary<string, object> Ok<TModel>(TModel Data)
+        public Dictionary<string, object> Ok<TModel>(TModel data)
         {
-            Result.Add("data", Data);
+            Result.Add("data", data);
 
             return Result;
         }
@@ -33,11 +33,11 @@ namespace Com.Bateeq.Service.Core.WebApi.Helpers
             return Result;
         }
 
-        public Dictionary<string, object> Fail(ServiceValidationExeption e)
+        public Dictionary<string, object> Fail(ServiceValidationExeption serviceValidationException)
         {
             Dictionary<string, string> Errors = new Dictionary<string, string>();
 
-            foreach (ValidationResult error in e.ValidationResults)
+            foreach (ValidationResult error in serviceValidationException.ValidationResults)
             {
                 Errors.Add(error.MemberNames.First(), error.ErrorMessage);
             }
@@ -46,14 +46,23 @@ namespace Com.Bateeq.Service.Core.WebApi.Helpers
             return Result;
         }
 
-        public void AddResponseInformation(Dictionary<string, object> Result, InternalMessage ApiVersion, int StatusCode, string Message)
+        public void AddResponseInformation(Dictionary<string, object> result, 
+                                           InternalMessage apiVersion, 
+                                           int statusCode, 
+                                           string message)
         {
-            Result.Add("apiVersion", ApiVersion);
-            Result.Add("statusCode", StatusCode);
-            Result.Add("message", Message);
+            result.Add("apiVersion", apiVersion);
+            result.Add("statusCode", statusCode);
+            result.Add("message", message);
         }
 
-        public Dictionary<string, object> Ok<TModel>(List<TModel> data, int page, int size, int totalData, int totalPageData, Dictionary<string, string> order, List<string> select)
+        public Dictionary<string, object> Ok<TModel>(List<TModel> data, 
+                                                    int page, 
+                                                    int size, 
+                                                    int totalData, 
+                                                    int totalPageData, 
+                                                    Dictionary<string, string> order, 
+                                                    List<string> select)
         {
             Dictionary<string, object> Info = new Dictionary<string, object>
             {

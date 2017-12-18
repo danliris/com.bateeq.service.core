@@ -28,10 +28,19 @@ namespace Com.Bateeq.Service.Core.Lib.Services
         }
 
         //Get All Data with Pagination, Sort, Keyword & Order
-        public virtual Tuple<List<TModel>, int, Dictionary<string, string>, List<string>> ReadModel(int page, int size, string order, List<string> select, string keyword)
+        public virtual Tuple<List<TModel>, 
+                             int, 
+                             Dictionary<string, string>, 
+                             List<string>> 
+            ReadModel(int page, 
+                      int size, 
+                      string order, 
+                      List<string> select, 
+                      string keyword)
         {
             IQueryable<TModel> query = DbContext.Set<TModel>();
-            Dictionary<string, string> orders = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            Dictionary<string, string> orders = 
+                JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             string dynamicQuery = "";
 
             if (!string.IsNullOrEmpty(keyword))
@@ -60,7 +69,8 @@ namespace Com.Bateeq.Service.Core.Lib.Services
             {
                 orders.Add("_updatedDate", "desc");
 
-                query = query.OrderByDescending(b => b._LastModifiedUtc); /* Default Order */
+                // Default Order
+                query = query.OrderByDescending(b => b._LastModifiedUtc); 
             }
             else
             {

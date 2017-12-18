@@ -33,18 +33,37 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
          * @parameter string keyword
          */
         [HttpGet]
-        public IActionResult Get(int page = 1, int size = 25, string order = "{}", [Bind(Prefix = "Select[]")]List<string> select = null, string keyword = "")
+        public IActionResult Get(int page = 1, 
+                                 int size = 25, 
+                                 string order = "{}", 
+                                 [Bind(Prefix = "Select[]")]List<string> select = null, 
+                                 string keyword = "")
         {
             try
             {
-                Tuple<List<TModel>, int, Dictionary<string, string>, List<string>> data = _service.ReadModel(page, size, order, select, keyword);
-                Dictionary<string, object> result = new ResultFormatter(InternalMessage.ApiVersion, (int)HttpStatusCode.OK, HttpStatusCode.OK.ToString()).Ok<TModel>(data.Item1, page, size, data.Item2, data.Item1.Count, data.Item3, data.Item4);
+                Tuple<List<TModel>, int, Dictionary<string, string>, List<string>> data = 
+                    _service.ReadModel(page, size, order, select, keyword);
+                Dictionary<string, object> result = 
+                    new ResultFormatter(InternalMessage.ApiVersion, 
+                                        (int)HttpStatusCode.OK, 
+                                        HttpStatusCode.OK.ToString())
+                                            .Ok<TModel>(data.Item1, 
+                                                        page, 
+                                                        size, 
+                                                        data.Item2, 
+                                                        data.Item1.Count, 
+                                                        data.Item3, 
+                                                        data.Item4);
 
                 return Ok(result);
             }
             catch (Exception exception)
             {
-                Dictionary<string, object> result = new ResultFormatter(InternalMessage.ApiVersion, (int)HttpStatusCode.InternalServerError, exception.Message).Fail();
+                Dictionary<string, object> result = 
+                    new ResultFormatter(InternalMessage.ApiVersion, 
+                                        (int)HttpStatusCode.InternalServerError, 
+                                        exception.Message)
+                                            .Fail();
 
                 return StatusCode((int)HttpStatusCode.InternalServerError, result);
             }
@@ -62,20 +81,32 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
 
                 if (model == null)
                 {
-                    Dictionary<string, object> ResultNotFound = new ResultFormatter(InternalMessage.ApiVersion, (int)HttpStatusCode.NotFound, HttpStatusCode.NotFound.ToString()).Fail();
+                    Dictionary<string, object> ResultNotFound = 
+                        new ResultFormatter(InternalMessage.ApiVersion, 
+                                            (int)HttpStatusCode.NotFound, 
+                                            HttpStatusCode.NotFound.ToString())
+                                                .Fail();
 
                     return NotFound(ResultNotFound);
                 }
                 else
                 {
-                    Dictionary<string, object> Result = new ResultFormatter(InternalMessage.ApiVersion, (int)HttpStatusCode.OK, HttpStatusCode.OK.ToString()).Ok<TModel>(model);
+                    Dictionary<string, object> Result = 
+                        new ResultFormatter(InternalMessage.ApiVersion, 
+                                            (int)HttpStatusCode.OK, 
+                                            HttpStatusCode.OK.ToString())
+                                                .Ok<TModel>(model);
 
                     return Ok(Result);
                 }
             }
             catch (Exception exception)
             {
-                Dictionary<string, object> result = new ResultFormatter(InternalMessage.ApiVersion, (int)HttpStatusCode.InternalServerError, exception.Message).Fail();
+                Dictionary<string, object> result = 
+                    new ResultFormatter(InternalMessage.ApiVersion, 
+                                        (int)HttpStatusCode.InternalServerError, 
+                                        exception.Message)
+                                            .Fail();
 
                 return StatusCode((int)HttpStatusCode.InternalServerError, result);
             }
@@ -93,20 +124,32 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
 
                 if (model == null)
                 {
-                    Dictionary<string, object> ResultNotFound = new ResultFormatter(InternalMessage.ApiVersion, (int)HttpStatusCode.NotFound, HttpStatusCode.NotFound.ToString()).Fail();
+                    Dictionary<string, object> ResultNotFound = 
+                        new ResultFormatter(InternalMessage.ApiVersion, 
+                                            (int)HttpStatusCode.NotFound, 
+                                            HttpStatusCode.NotFound.ToString())
+                                            .Fail();
 
                     return NotFound(ResultNotFound);
                 }
                 else
                 {
-                    Dictionary<string, object> Result = new ResultFormatter(InternalMessage.ApiVersion, (int)HttpStatusCode.OK, HttpStatusCode.OK.ToString()).Ok<TModel>(model);
+                    Dictionary<string, object> Result = 
+                        new ResultFormatter(InternalMessage.ApiVersion, 
+                                            (int)HttpStatusCode.OK, 
+                                            HttpStatusCode.OK.ToString())
+                                                .Ok<TModel>(model);
 
                     return Ok(Result);
                 }
             }
             catch (Exception exception)
             {
-                Dictionary<string, object> result = new ResultFormatter(InternalMessage.ApiVersion, (int)HttpStatusCode.InternalServerError, exception.Message).Fail();
+                Dictionary<string, object> result = 
+                    new ResultFormatter(InternalMessage.ApiVersion, 
+                                        (int)HttpStatusCode.InternalServerError, 
+                                        exception.Message)
+                                            .Fail();
 
                 return StatusCode((int)HttpStatusCode.InternalServerError, result);
             }
@@ -122,17 +165,32 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
             {
                 await _service.CreateModel(Model);
 
-                Dictionary<string, object> Result = new ResultFormatter(InternalMessage.ApiVersion, (int)HttpStatusCode.OK, HttpStatusCode.OK.ToString()).Ok();
+                Dictionary<string, object> Result = 
+                    new ResultFormatter(InternalMessage.ApiVersion, 
+                                        (int)HttpStatusCode.OK, 
+                                        HttpStatusCode.OK.ToString())
+                                            .Ok();
+
                 return Created(String.Concat(HttpContext.Request.Path, "/", Model.Id), Result);
             }
             catch (ServiceValidationExeption serviceValidationException)
             {
-                Dictionary<string, object> Result = new ResultFormatter(InternalMessage.ApiVersion, (int)HttpStatusCode.BadRequest, HttpStatusCode.BadRequest.ToString()).Fail(serviceValidationException);
+                Dictionary<string, object> Result = 
+                    new ResultFormatter(InternalMessage.ApiVersion, 
+                                        (int)HttpStatusCode.BadRequest, 
+                                        HttpStatusCode.BadRequest.ToString())
+                                            .Fail(serviceValidationException);
+
                 return BadRequest(Result);
             }
             catch (Exception exception)
             {
-                Dictionary<string, object> Result = new ResultFormatter(InternalMessage.ApiVersion, (int)HttpStatusCode.InternalServerError, exception.Message).Fail();
+                Dictionary<string, object> Result = 
+                    new ResultFormatter(InternalMessage.ApiVersion, 
+                                        (int)HttpStatusCode.InternalServerError, 
+                                        exception.Message)
+                                            .Fail();
+
                 return StatusCode((int)HttpStatusCode.InternalServerError, Result);
             }
         }
@@ -152,7 +210,12 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
 
                 if (Id != Model.Id)
                 {
-                    Dictionary<string, object> Result = new ResultFormatter(InternalMessage.ApiVersion, (int)HttpStatusCode.BadRequest, HttpStatusCode.BadRequest.ToString()).Fail();
+                    Dictionary<string, object> Result = 
+                        new ResultFormatter(InternalMessage.ApiVersion, 
+                                            (int)HttpStatusCode.BadRequest, 
+                                            HttpStatusCode.BadRequest.ToString())
+                                                .Fail();
+
                     return BadRequest(Result);
                 }
 
@@ -162,26 +225,42 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
             }
             catch (ServiceValidationExeption serviceValidationException)
             {
-                Dictionary<string, object> Result = new ResultFormatter(InternalMessage.ApiVersion, (int)HttpStatusCode.BadRequest, HttpStatusCode.BadRequest.ToString()).Fail(serviceValidationException);
+                Dictionary<string, object> Result = 
+                    new ResultFormatter(InternalMessage.ApiVersion, 
+                                        (int)HttpStatusCode.BadRequest, 
+                                        HttpStatusCode.BadRequest.ToString())
+                                            .Fail(serviceValidationException);
+
                 return BadRequest(Result);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
                 if (!_service.IsExists(Id))
                 {
-                    Dictionary<string, object> Result = new ResultFormatter(InternalMessage.ApiVersion, (int)HttpStatusCode.NotFound, HttpStatusCode.NotFound.ToString()).Fail();
+                    Dictionary<string, object> Result = 
+                        new ResultFormatter(InternalMessage.ApiVersion, 
+                                            (int)HttpStatusCode.NotFound, 
+                                            HttpStatusCode.NotFound.ToString())
+                                                .Fail();
                     return NotFound(Result);
                 }
                 else
                 {
-                    Dictionary<string, object> Result = new ResultFormatter(InternalMessage.ApiVersion, (int)HttpStatusCode.InternalServerError, dbUpdateConcurrencyException.Message).Fail();
+                    Dictionary<string, object> Result = 
+                        new ResultFormatter(InternalMessage.ApiVersion, 
+                                            (int)HttpStatusCode.InternalServerError, 
+                                            dbUpdateConcurrencyException.Message)
+                                                .Fail();
                     return StatusCode((int)HttpStatusCode.InternalServerError, Result);
                 }
             }
             catch (Exception exception)
             {
-                Dictionary<string, object> Result = new ResultFormatter(InternalMessage.ApiVersion, (int)HttpStatusCode.InternalServerError, exception.Message)
-                    .Fail();
+                Dictionary<string, object> Result = 
+                    new ResultFormatter(InternalMessage.ApiVersion, 
+                                        (int)HttpStatusCode.InternalServerError, 
+                                        exception.Message)
+                                            .Fail();
                 return StatusCode((int)HttpStatusCode.InternalServerError, Result);
             }
         }
@@ -203,9 +282,13 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
 
                 return NoContent();
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Dictionary<string, object> Result = new ResultFormatter(InternalMessage.ApiVersion, (int)HttpStatusCode.InternalServerError, e.Message).Fail();
+                Dictionary<string, object> Result = 
+                    new ResultFormatter(InternalMessage.ApiVersion, 
+                                        (int)HttpStatusCode.InternalServerError, 
+                                        exception.Message)
+                                        .Fail();
                 return StatusCode((int)HttpStatusCode.InternalServerError, Result);
             }
         }
