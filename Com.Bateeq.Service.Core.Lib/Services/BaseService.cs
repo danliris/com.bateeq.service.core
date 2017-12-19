@@ -21,13 +21,23 @@ namespace Com.Bateeq.Service.Core.Lib.Services
         {
         }
 
-        //Create Data
+        /*
+         * Create Data
+         */
         public virtual async Task<int> CreateModel(TModel Model)
         {
             return await this.CreateAsync(Model);
         }
 
-        //Get All Data with Pagination, Sort, Keyword & Order
+        /*
+         * Get All Data with Pagination, Sort, Keyword & Order
+         * @parameter page int
+         * @parameter size int
+         * @parameter order json object 
+         * @parameter select List string type
+         * @parameter keyword string
+         * example order : { "[field]" : "[order]" } where order asc or desc
+         */
         public virtual Tuple<List<TModel>, 
                              int, 
                              Dictionary<string, string>, 
@@ -39,10 +49,10 @@ namespace Com.Bateeq.Service.Core.Lib.Services
                       string keyword)
         {
             IQueryable<TModel> query = DbContext.Set<TModel>();
-            Dictionary<string, string> orders = 
-                JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            Dictionary<string, string> orders = new Dictionary<string, string>();
             string dynamicQuery = "";
-
+            
+            //Keyword
             if (!string.IsNullOrEmpty(keyword))
             {
                 var keywords = keyword.Split(" ");
@@ -65,11 +75,16 @@ namespace Com.Bateeq.Service.Core.Lib.Services
             }
 
             // Order
+            if (!string.IsNullOrEmpty(order))
+            {
+                orders = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            }
+
             if (orders.Count.Equals(0))
             {
-                orders.Add("_updatedDate", "desc");
-
                 // Default Order
+                orders.Add("_updatedDate", "desc");
+                
                 query = query.OrderByDescending(b => b._LastModifiedUtc); 
             }
             else
@@ -78,11 +93,16 @@ namespace Com.Bateeq.Service.Core.Lib.Services
                 string OrderType = orders[Key];
                 string TransformKey = Key;
 
-                BindingFlags IgnoreCase = BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance;
-
-                query = OrderType.Equals("asc") ?
-                    query.OrderBy(b => b.GetType().GetProperty(TransformKey, IgnoreCase).GetValue(b)) :
-                    query.OrderByDescending(b => b.GetType().GetProperty(TransformKey, IgnoreCase).GetValue(b));
+                BindingFlags IgnoreCase = BindingFlags.IgnoreCase | 
+                                          BindingFlags.Public | 
+                                          BindingFlags.Instance;
+                query = OrderType.Equals("asc") ? 
+                    query.OrderBy(b => b.GetType()
+                                        .GetProperty(TransformKey, IgnoreCase)
+                                        .GetValue(b)) :
+                    query.OrderByDescending(b => b.GetType()
+                                                  .GetProperty(TransformKey, IgnoreCase)
+                                                  .GetValue(b));
             }
 
             // Pagination
@@ -93,13 +113,17 @@ namespace Com.Bateeq.Service.Core.Lib.Services
             return Tuple.Create(pageableData, totalData, orders, select);
         }
 
-        //Get Data ById
+        /*
+         * Get Data @parameter Id int
+         */
         public virtual async Task<TModel> ReadModelById(int Id)
         {
             return await GetAsync(Id);
         }
 
-        //Get Data By_id for older data
+        /*
+         * Get Data @parameter _id string
+         */
         public virtual async Task<TModel> ReadModelById(string _id)
         {
             var model = Task.Run(() => GetModelById(_id));
@@ -107,21 +131,28 @@ namespace Com.Bateeq.Service.Core.Lib.Services
             return await model;
         }
 
-        //Get Model By Id
+        /*
+         * Private Method Get Model @parameter Id int
+         */
         private TModel GetModelById(string _id)
         {
-            IQueryable<TModel> query = DbContext.Set<TModel>().Where("it._id.Contains(@0)", _id);
+            IQueryable<TModel> query = DbContext.Set<TModel>()
+                                                .Where("it._id.Contains(@0)", _id);
 
             return query.FirstOrDefault();
         }
 
-        //Update Data
+        /*
+         * Update Data @parameter Id int and @parameter TModel model
+         */
         public virtual async Task<int> UpdateModel(int Id, TModel Model)
         {
             return await this.UpdateAsync(Id, Model);
         }
 
-        //Delete Data
+        /*
+         * Delete Data @parameter Id int
+         */
         public virtual async Task<int> DeleteModel(int Id)
         {
             return await this.DeleteAsync(Id);
