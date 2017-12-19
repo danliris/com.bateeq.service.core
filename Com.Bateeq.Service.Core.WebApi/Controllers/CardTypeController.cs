@@ -7,7 +7,7 @@ using Com.Bateeq.Service.Core.Lib.Context;
 
 namespace Com.Bateeq.Service.Core.WebApi.Controllers
 {
-    [Route("v1/master/card-types")]
+    [Route("v1/master/card-type")]
     public class CardTypeController : BaseController<CardTypeService, CardType, CoreDbContext>
     {
         public CardTypeController(CardTypeService service) : base(service)
