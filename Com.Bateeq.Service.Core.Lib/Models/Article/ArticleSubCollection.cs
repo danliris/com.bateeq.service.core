@@ -14,6 +14,7 @@ namespace Com.Bateeq.Service.Core.Lib.Models.Article
         public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public ArticleCollection ArticleCollection { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

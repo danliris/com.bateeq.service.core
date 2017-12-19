@@ -27,6 +27,7 @@ namespace Com.Bateeq.Service.Core.WebApi
             services.AddTransient<CardTypeService>();
             services.AddTransient<ArticleCategoryService>();
             services.AddTransient<ArticleCollectionService>();
+            services.AddTransient<ItemService>();
             services.AddMvc();
 
             // Register the Swagger generator, defining one or more Swagger documents

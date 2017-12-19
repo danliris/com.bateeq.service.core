@@ -1,11 +1,10 @@
 ﻿using Com.Moonlay.Models;
-using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using Com.Bateeq.Service.Core.Lib.Context;
+using System.ComponentModel.DataAnnotations;
 
-namespace Com.Bateeq.Service.Core.Lib.Models.Article
+namespace Com.Bateeq.Service.Core.Lib.Models
 {
-    public class ArticleSubCounter : StandardEntity, IValidatableObject
+    public class Item : StandardEntity, IValidatableObject
     {
         public string _id { get; set; }
         public string _stamp { get; set; }
@@ -14,23 +13,35 @@ namespace Com.Bateeq.Service.Core.Lib.Models.Article
         public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public ArticleCounter ArticleCounter { get; set; }
+        public string Uom { get; set; }
+        public string Tags { get; set; }
+        public ICollection<Component> Components  { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (string.IsNullOrWhiteSpace(this.Code))
+            if (string.IsNullOrWhiteSpace(Code))
             {
                 yield return new ValidationResult("Code is required", new List<string> { "Code" });
             }
 
-            if (string.IsNullOrWhiteSpace(this.Name))
+            if (string.IsNullOrWhiteSpace(Name))
             {
                 yield return new ValidationResult("Name is required", new List<string> { "Name" });
             }
 
-            if (string.IsNullOrWhiteSpace(this.Description))
+            if (string.IsNullOrWhiteSpace(Description))
             {
                 yield return new ValidationResult("Description is required", new List<string> { "Description" });
+            }
+
+            if (string.IsNullOrWhiteSpace(Uom))
+            {
+                yield return new ValidationResult("Uom is required", new List<string> { "Uom" });
+            }
+
+            if (string.IsNullOrWhiteSpace(Tags))
+            {
+                yield return new ValidationResult("Tags is required", new List<string> { "Tags" });
             }
         }
     }
