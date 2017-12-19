@@ -27,10 +27,12 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
         }
 
         /*
-         * @parameter int page,
-         * @parameter int size,
-         * @parameter List select with type list string
-         * @parameter string keyword
+         * @parameter page int
+         * @parameter size int
+         * @parameter order json object 
+         * @parameter select List string type
+         * @parameter keyword string
+         * example order : { "[field]" : "[order]" } where order asc or desc
          */
         [HttpGet]
         public IActionResult Get(int page = 1, 

@@ -31,12 +31,6 @@ namespace Com.Bateeq.Service.Core.Lib.Services
 
         /*
          * Get All Data with Pagination, Sort, Keyword & Order
-         * @parameter page int
-         * @parameter size int
-         * @parameter order json object 
-         * @parameter select List string type
-         * @parameter keyword string
-         * example order : { "[field]" : "[order]" } where order asc or desc
          */
         public virtual Tuple<List<TModel>, 
                              int, 
