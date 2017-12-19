@@ -35,7 +35,7 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
         [HttpGet]
         public IActionResult Get(int page = 1, 
                                  int size = 25, 
-                                 string order = "{}", 
+                                 string order = "", 
                                  [Bind(Prefix = "Select[]")]List<string> select = null, 
                                  string keyword = "")
         {
