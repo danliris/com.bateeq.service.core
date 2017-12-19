@@ -128,7 +128,7 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
                         new ResultFormatter(InternalMessage.ApiVersion, 
                                             (int)HttpStatusCode.NotFound, 
                                             HttpStatusCode.NotFound.ToString())
-                                            .Fail();
+                                                .Fail();
 
                     return NotFound(ResultNotFound);
                 }

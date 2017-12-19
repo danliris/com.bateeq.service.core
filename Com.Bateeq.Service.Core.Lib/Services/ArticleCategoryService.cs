@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Com.Bateeq.Service.Core.Lib.Services
 {
-    public class ArticleCategoryService : StandardEntityService<CoreDbContext, ArticleCategory>
+    public class ArticleCategoryService : BaseService<CoreDbContext, ArticleCategory>
     {
         public ArticleCategoryService(IServiceProvider serviceProvider) : base(serviceProvider)
         {
