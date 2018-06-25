@@ -1,16 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Com.Bateeq.Service.Core.Lib.Services;
+using Microsoft.AspNetCore.Authorization;
+using Com.Bateeq.Service.Core.Lib.Facades.Logic;
 using Com.Bateeq.Service.Core.Lib.Models;
-using Com.Bateeq.Service.Core.Lib.Context;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Com.Bateeq.Service.Core.WebApi.ViewModels;
 
 namespace Com.Bateeq.Service.Core.WebApi.Controllers
 {
-    [Route("v1/master/bank")]
-    public class BankController : BaseController<BankService, Bank, CoreDbContext>
+    [Produces("application/json")]
+    [ApiVersion("1.0")]
+    [Route("v{version:apiVersion}/master/banks")]
+    [Authorize]
+    public class BankController : BaseImplController<BankLogic, Bank, BankVM>
     {
-        public BankController(BankService service) : base(service)
+        public BankController(BankLogic logic) : base(logic)
         {
         }
     }
