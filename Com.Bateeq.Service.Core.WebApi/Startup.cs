@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Com.Bateeq.Service.Core.Lib;
+using Com.Bateeq.Service.Core.Lib.Facades.Logic;
+using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Com.Bateeq.Service.Core.Lib.Context;
-using Microsoft.EntityFrameworkCore;
-using Com.Bateeq.Service.Core.Lib.Services;
-using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Serialization;
+using System.Text;
 
 namespace Com.Bateeq.Service.Core.WebApi
 {
@@ -22,19 +26,53 @@ namespace Com.Bateeq.Service.Core.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection") ?? Configuration["DefaultConnection"];
-            services.AddDbContext<CoreDbContext>(options => options.UseSqlServer(connectionString));
-            services.AddTransient<BankService>();
-            services.AddTransient<CardTypeService>();
-            services.AddTransient<ArticleCategoryService>();
-            services.AddTransient<ArticleCollectionService>();
-            services.AddTransient<ItemService>();
-            services.AddMvc();
+            var Secret = Configuration.GetValue<string>("Secret") ?? Configuration["Secret"];
+            var Key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Secret));
 
-            // Register the Swagger generator, defining one or more Swagger documents
-            services.AddSwaggerGen(c =>
+            services
+                .AddDbContext<CoreDbContext>(options => options.UseSqlServer(connectionString))
+                .AddApiVersioning(options =>
+                {
+                    options.ReportApiVersions = true;
+                    options.AssumeDefaultVersionWhenUnspecified = true;
+                    options.DefaultApiVersion = new ApiVersion(1, 0);
+                });
+
+            //Register SubFacade
+            services
+                .AddTransient<BankLogic>();
+
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false,
+                        ValidateIssuer = false,
+                        ValidateLifetime = false,
+                        IssuerSigningKey = Key
+                    };
+                });
+
+            services
+                .AddMvcCore()
+                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
+                .AddAuthorization(options =>
+                {
+                    options.AddPolicy("service.core.read", (policyBuilder) =>
+                    {
+                        policyBuilder.RequireClaim("scope", "service.core.read");
+                    });
+                })
+                .AddJsonFormatters();
+
+            services.AddCors(options => options.AddPolicy("ServiceCorePolicy", builder =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "My CORE API", Version = "v1" });
-            });
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader()
+                       .WithExposedHeaders("Content-Disposition", "api-version", "content-length", "content-md5", "content-type", "date", "request-id", "response-time");
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,17 +81,16 @@ namespace Com.Bateeq.Service.Core.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
-                // Enable middleware to serve generated Swagger as a JSON endpoint.
-                app.UseSwagger();
-
-                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My CORE API V1");
-                });
             }
 
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService<CoreDbContext>();
+                context.Database.Migrate();
+            }
+
+            app.UseAuthentication();
+            app.UseCors("ServiceCorePolicy");
             app.UseMvc();
         }
     }
