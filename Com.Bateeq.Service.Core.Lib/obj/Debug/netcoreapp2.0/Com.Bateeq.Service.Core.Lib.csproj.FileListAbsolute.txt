@@ -8,3 +8,4 @@ D:\New Bateeq Development 2018\com.bateeq.service.core\Com.Bateeq.Service.Core.L
 D:\New Bateeq Development 2018\com.bateeq.service.core\Com.Bateeq.Service.Core.Lib\obj\Debug\netcoreapp2.0\Com.Bateeq.Service.Core.Lib.AssemblyInfo.cs
 D:\New Bateeq Development 2018\com.bateeq.service.core\Com.Bateeq.Service.Core.Lib\obj\Debug\netcoreapp2.0\Com.Bateeq.Service.Core.Lib.dll
 D:\New Bateeq Development 2018\com.bateeq.service.core\Com.Bateeq.Service.Core.Lib\obj\Debug\netcoreapp2.0\Com.Bateeq.Service.Core.Lib.pdb
+D:\New Bateeq Development 2018\com.bateeq.service.core\Com.Bateeq.Service.Core.Lib\obj\Debug\netcoreapp2.0\Com.Bateeq.Service.Core.Lib.csprojResolveAssemblyReference.cache

@@ -22,7 +22,7 @@ namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
 
             List<string> SearchAttributes = new List<string>()
                 {
-                    "Code", "Name", "Description"
+                    "Code", "Name", "Description", "_id"
                 };
 
             Query = ConfigureSearch(Query, SearchAttributes, Keyword);
@@ -31,7 +31,7 @@ namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
 
             List<string> SelectedFields = new List<string>()
                 {
-                    "Id", "Code", "Name", "Description"
+                    "Id", "Code", "Name", "Description", "_id"
                 };
             Query = Query
                 .Select(bank => new Bank
@@ -39,7 +39,8 @@ namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
                     Id = bank.Id,
                     Code = bank.Code,
                     Name = bank.Name,
-                    Description = bank.Description
+                    Description = bank.Description,
+                    _id = bank._id
                 });
 
             Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(Order);

@@ -62,7 +62,7 @@ namespace Com.Bateeq.Service.Core.WebApi.Common.Utils
             return Result;
         }
 
-        public Dictionary<string, object> Ok<TModel, TViewModel>(List<TModel> Data, Func<TModel, TViewModel> MapToViewModel, int Page, int Size, int TotalData, int TotalPageData, Dictionary<string, string> Order, List<string> Select)
+        public Dictionary<string, object> Ok<TModel, TViewModel>(List<TViewModel> Data, int Page, int Size, int TotalData, int TotalPageData, Dictionary<string, string> Order, List<string> Select)
         {
             Dictionary<string, object> Info = new Dictionary<string, object>
             {
@@ -72,25 +72,8 @@ namespace Com.Bateeq.Service.Core.WebApi.Common.Utils
                 { "total", TotalData },
                 { "order", Order }
             };
-
-            List<TViewModel> DataVM = new List<TViewModel>();
-
-            foreach (TModel d in Data)
-            {
-                DataVM.Add(MapToViewModel(d));
-            }
-
-            if (Select.Count > 0)
-            {
-                var DataObj = DataVM.AsQueryable().Select(string.Concat("new(", string.Join(",", Select), ")"));
-                Result.Add("data", DataObj);
-                Info.Add("select", Select);
-            }
-            else
-            {
-                Result.Add("data", DataVM);
-            }
-
+            
+            Result.Add("data", Data);
             Result.Add("info", Info);
 
             return Result;

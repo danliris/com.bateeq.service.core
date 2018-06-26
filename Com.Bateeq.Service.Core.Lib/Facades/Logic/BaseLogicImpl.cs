@@ -1,4 +1,5 @@
-﻿using Com.Bateeq.Service.Core.Lib.Common.Utils;
+﻿using Com.Bateeq.Service.Core.Lib.Common.Helper;
+using Com.Bateeq.Service.Core.Lib.Common.Utils;
 using Com.Bateeq.Service.Core.Lib.Models;
 using Com.Moonlay.Models;
 using System;
@@ -21,19 +22,19 @@ namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
             CoreDbContext = coreDbContext;
         }
 
-        public virtual async Task<int> CreateModel(string username, TModel model)
+        public virtual async Task<int> CreateModel(UserIdentity user, TModel model)
         {
-            EntityExtension.FlagForCreate(model, username, "core-service");
-            CoreDbContext.Add(model);
+            EntityExtension.FlagForCreate(model, user.Username, "core-service");
+            CoreDbContext.Set<TModel>().Add(model);
 
             return await CoreDbContext.SaveChangesAsync();
         }
 
-        public virtual async Task<int> DeleteModelAsync(string username, int id)
+        public virtual async Task<int> DeleteModelAsync(UserIdentity user, int id)
         {
             var model = await ReadModelById(id);
-            EntityExtension.FlagForDelete(model, username, "core-service");
-            CoreDbContext.Update(model);
+            EntityExtension.FlagForDelete(model, user.Username, "core-service");
+            CoreDbContext.Set<TModel>().Update(model);
 
             return await CoreDbContext.SaveChangesAsync();
         }
@@ -71,11 +72,10 @@ namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
             return await Task.FromResult(model);
         }
 
-        public virtual async Task<int> UpdateModel(string username, TModel model)
+        public virtual async Task<int> UpdateModel(UserIdentity user, TModel model)
         {
-            EntityExtension.FlagForDelete(model, username, "core-service");
-            CoreDbContext.Update(model);
-
+            EntityExtension.FlagForUpdate(model, user.Username, "core-service");
+            CoreDbContext.Set<TModel>().Update(model);
             return await CoreDbContext.SaveChangesAsync();
         }
 
