@@ -37,7 +37,6 @@ namespace Com.Bateeq.Service.Core.WebApi
                     options.AssumeDefaultVersionWhenUnspecified = true;
                     options.DefaultApiVersion = new ApiVersion(1, 0);
                 });
-
             //Register SubFacade
             services
                 .AddTransient<BankLogic>();

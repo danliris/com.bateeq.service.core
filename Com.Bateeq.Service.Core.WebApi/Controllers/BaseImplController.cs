@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Com.Bateeq.Service.Core.Lib.Common.Helper;
 using Com.Bateeq.Service.Core.Lib.Facades.Logic;
 using Com.Bateeq.Service.Core.Lib.Models;
 using Com.Bateeq.Service.Core.WebApi.Common.Utils;
@@ -19,9 +20,9 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
     {
         TBusinessLogic BusinessLogic;
         private string ApiVersion = "1";
-        private string Username;
-        private string Token;
+        private UserIdentity UserIdentity;
         private string Message;
+        private int MessageCode;
         private TViewModel viewModel;
 
         public BaseImplController(TBusinessLogic businessLogic)
@@ -154,8 +155,9 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
         {
             try
             {
-                Username = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;
-                Token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "");
+                UserIdentity = new UserIdentity();
+                UserIdentity.Username = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;
+                UserIdentity.Token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "");
 
                 var config = new MapperConfiguration(cfg => {
 
@@ -166,10 +168,10 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
                 IMapper iMapper = config.CreateMapper();         
                 TModel model = iMapper.Map<TViewModel, TModel>(viewModel);
 
-                await BusinessLogic.CreateModel(Username, model);
+                MessageCode = await BusinessLogic.CreateModel(UserIdentity, model);
 
                 Dictionary<string, object> Result =
-                    new ResultFormatter(ApiVersion, StatusMessage.CREATED_STATUS_CODE, StatusMessage.OK_MESSAGE)
+                    new ResultFormatter(ApiVersion, MessageCode, StatusMessage.OK_MESSAGE)
                     .Ok();
                 return Created(String.Concat(Request.Path, "/", 0), Result);
             }
@@ -187,31 +189,25 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
         {
             try
             {
-                Username = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;
-                Token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "");
-
+                UserIdentity = new UserIdentity();
+                UserIdentity.Username = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;
+                UserIdentity.Token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "");
                 var config = new MapperConfiguration(cfg => {
 
                     cfg.CreateMap<TViewModel, TModel>();
 
                 });
-
                 IMapper iMapper = config.CreateMapper();
                 TModel model = iMapper.Map<TViewModel, TModel>(viewModel);
 
-                var isExist = await BusinessLogic.IsExsist(id);
-
-                if (isExist && model.Id == id)
-                {
-                    await BusinessLogic.UpdateModel(Username, model);
-                }
+                MessageCode = await BusinessLogic.UpdateModel(UserIdentity, model);
 
                 return NoContent();
             }
             catch (Exception e)
             {
                 Dictionary<string, object> Result =
-                    new ResultFormatter(ApiVersion, StatusMessage.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    new ResultFormatter(ApiVersion, MessageCode, e.Message)
                     .Fail();
                 return StatusCode(StatusMessage.INTERNAL_ERROR_STATUS_CODE, Result);
             }
@@ -222,14 +218,15 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
         {
             try
             {
-                Username = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;
-                Token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "");
+                UserIdentity = new UserIdentity();
+                UserIdentity.Username = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;
+                UserIdentity.Token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "");
                 
                 var isExist = await BusinessLogic.IsExsist(id);
 
                 if (isExist)
                 {
-                    await BusinessLogic.DeleteModelAsync(Username, id);
+                    MessageCode = await BusinessLogic.DeleteModelAsync(UserIdentity, id);
                 } else
                 {
                     Message = StatusMessage.NOT_FOUND_MESSAGE;
@@ -240,7 +237,7 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
             catch (Exception e)
             {
                 Dictionary<string, object> Result =
-                    new ResultFormatter(ApiVersion, StatusMessage.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    new ResultFormatter(ApiVersion, MessageCode, e.Message)
                     .Fail();
                 return StatusCode(StatusMessage.INTERNAL_ERROR_STATUS_CODE, Result);
             }
