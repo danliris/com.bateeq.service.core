@@ -22,7 +22,7 @@ namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
 
             List<string> SearchAttributes = new List<string>()
                 {
-                    "Code", "Name", "Description", "_id"
+                    "Code", "Name", "Description"
                 };
 
             Query = ConfigureSearch(Query, SearchAttributes, Keyword);
