@@ -22,10 +22,86 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
         private string Username;
         private string Token;
         private string Message;
+        private TViewModel viewModel;
 
         public BaseImplController(TBusinessLogic businessLogic)
         {
             BusinessLogic = businessLogic;
+        }
+
+        [HttpGet]
+        public IActionResult Get(int Page = 1, int Size = 25, string Order = "{}", [Bind(Prefix = "Select[]")]List<string> Select = null, string Keyword = null, string Filter = "{}")
+        {
+            try
+            {
+                List<TViewModel> DataVM = new List<TViewModel>();
+                Tuple<List<TModel>, int, Dictionary<string, string>, List<string>> Data = BusinessLogic.ReadModel(Page, Size, Order, Select, Keyword, Filter);
+                var config = new MapperConfiguration(cfg => {
+
+                    cfg.CreateMap<TModel, TViewModel>();
+
+                });
+                IMapper iMapper = config.CreateMapper();
+
+                foreach (TModel d in Data.Item1)
+                {
+                    viewModel = iMapper.Map<TModel, TViewModel>(d);
+                    DataVM.Add(viewModel);
+                }
+
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, StatusMessage.OK_STATUS_CODE, StatusMessage.OK_MESSAGE)
+                    .Ok<TModel, TViewModel>(DataVM, Page, Size, Data.Item2, Data.Item1.Count, Data.Item3, Data.Item4);
+
+                return Ok(Result);
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, StatusMessage.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(StatusMessage.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
+
+        [HttpGet("UId/{Id}")]
+        public virtual async Task<IActionResult> GetByUId([FromRoute] string id)
+        {
+            try
+            {
+                TModel model = await BusinessLogic.ReadModelById(id);
+
+                if (model == null)
+                {
+                    Dictionary<string, object> Result =
+                        new ResultFormatter(ApiVersion, StatusMessage.NOT_FOUND_STATUS_CODE, StatusMessage.NOT_FOUND_MESSAGE)
+                        .Fail();
+                    return NotFound(Result);
+                }
+                else
+                {
+                    var config = new MapperConfiguration(cfg => {
+
+                        cfg.CreateMap<TModel, TViewModel>();
+
+                    });
+
+                    IMapper iMapper = config.CreateMapper();
+                    TViewModel viewModel = iMapper.Map<TModel, TViewModel>(model);
+                    Dictionary<string, object> Result =
+                        new ResultFormatter(ApiVersion, StatusMessage.OK_STATUS_CODE, StatusMessage.OK_MESSAGE)
+                        .Ok<TViewModel>(viewModel);
+
+                    return Ok(Result);
+                }
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, StatusMessage.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(StatusMessage.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
         }
 
         [HttpGet("{Id}")]
@@ -34,6 +110,11 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
             try
             {
                 TModel model = await BusinessLogic.ReadModelById(id);
+
+                if (model == null)
+                {
+                    model = await BusinessLogic.ReadModelById(id.ToString());
+                }
 
                 if (model == null)
                 {

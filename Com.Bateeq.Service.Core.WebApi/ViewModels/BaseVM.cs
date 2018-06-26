@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ namespace Com.Bateeq.Service.Core.WebApi.ViewModels
 {
     public abstract class BaseVM
     {
+        public int Id { get; set; }
         public bool Active { get; set; }
         public DateTime CreatedUtc { get; set; }
         public string CreatedBy { get; set; }
