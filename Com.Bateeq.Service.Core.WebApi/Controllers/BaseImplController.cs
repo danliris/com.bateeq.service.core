@@ -21,7 +21,6 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
         TBusinessLogic BusinessLogic;
         private string ApiVersion = "1";
         private UserIdentity UserIdentity;
-        private string Message;
         private int MessageCode;
         private TViewModel viewModel;
 
@@ -221,16 +220,8 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
                 UserIdentity = new UserIdentity();
                 UserIdentity.Username = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;
                 UserIdentity.Token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "");
-                
-                var isExist = await BusinessLogic.IsExsist(id);
 
-                if (isExist)
-                {
-                    MessageCode = await BusinessLogic.DeleteModelAsync(UserIdentity, id);
-                } else
-                {
-                    Message = StatusMessage.NOT_FOUND_MESSAGE;
-                }
+                MessageCode = await BusinessLogic.DeleteModelAsync(UserIdentity, id);
 
                 return NoContent();
             }
