@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 using System.Text;
+using AutoMapper;
 
 namespace Com.Bateeq.Service.Core.WebApi
 {
@@ -40,6 +41,7 @@ namespace Com.Bateeq.Service.Core.WebApi
             //Register SubFacade
             services
                 .AddTransient<BankLogic>();
+            services.AddAutoMapper();
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

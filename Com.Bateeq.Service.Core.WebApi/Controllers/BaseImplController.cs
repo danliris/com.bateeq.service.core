@@ -23,10 +23,12 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
         private UserIdentity UserIdentity;
         private int MessageCode;
         private TViewModel viewModel;
+        private IMapper Mapper;
 
-        public BaseImplController(TBusinessLogic businessLogic)
+        public BaseImplController(TBusinessLogic businessLogic, IMapper mapper)
         {
             BusinessLogic = businessLogic;
+            Mapper = mapper;
         }
 
         [HttpGet]
@@ -36,16 +38,10 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
             {
                 List<TViewModel> DataVM = new List<TViewModel>();
                 Tuple<List<TModel>, int, Dictionary<string, string>, List<string>> Data = BusinessLogic.ReadModel(Page, Size, Order, Select, Keyword, Filter);
-                var config = new MapperConfiguration(cfg => {
-
-                    cfg.CreateMap<TModel, TViewModel>();
-
-                });
-                IMapper iMapper = config.CreateMapper();
 
                 foreach (TModel d in Data.Item1)
                 {
-                    viewModel = iMapper.Map<TModel, TViewModel>(d);
+                    viewModel = Mapper.Map<TViewModel>(d);
                     DataVM.Add(viewModel);
                 }
 
@@ -80,14 +76,7 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
                 }
                 else
                 {
-                    var config = new MapperConfiguration(cfg => {
-
-                        cfg.CreateMap<TModel, TViewModel>();
-
-                    });
-
-                    IMapper iMapper = config.CreateMapper();
-                    TViewModel viewModel = iMapper.Map<TModel, TViewModel>(model);
+                    TViewModel viewModel = Mapper.Map<TViewModel>(model);
                     Dictionary<string, object> Result =
                         new ResultFormatter(ApiVersion, StatusMessage.OK_STATUS_CODE, StatusMessage.OK_MESSAGE)
                         .Ok<TViewModel>(viewModel);
@@ -125,14 +114,7 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
                 }
                 else
                 {
-                    var config = new MapperConfiguration(cfg => {
-
-                        cfg.CreateMap<TModel, TViewModel>();
-
-                    });
-
-                    IMapper iMapper = config.CreateMapper();
-                    TViewModel viewModel = iMapper.Map<TModel, TViewModel>(model);
+                    TViewModel viewModel = Mapper.Map<TViewModel>(model);
                     Dictionary<string, object> Result =
                         new ResultFormatter(ApiVersion, StatusMessage.OK_STATUS_CODE, StatusMessage.OK_MESSAGE)
                         .Ok<TViewModel>(viewModel);
@@ -157,16 +139,8 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
                 UserIdentity = new UserIdentity();
                 UserIdentity.Username = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;
                 UserIdentity.Token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "");
-
-                var config = new MapperConfiguration(cfg => {
-
-                    cfg.CreateMap<TViewModel, TModel>();
-
-                });
-
-                IMapper iMapper = config.CreateMapper();         
-                TModel model = iMapper.Map<TViewModel, TModel>(viewModel);
-
+                
+                TModel model = Mapper.Map<TModel>(viewModel);
                 MessageCode = await BusinessLogic.CreateModel(UserIdentity, model);
 
                 Dictionary<string, object> Result =
@@ -191,14 +165,7 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
                 UserIdentity = new UserIdentity();
                 UserIdentity.Username = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;
                 UserIdentity.Token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "");
-                var config = new MapperConfiguration(cfg => {
-
-                    cfg.CreateMap<TViewModel, TModel>();
-
-                });
-                IMapper iMapper = config.CreateMapper();
-                TModel model = iMapper.Map<TViewModel, TModel>(viewModel);
-
+                TModel model = Mapper.Map<TModel>(viewModel);
                 MessageCode = await BusinessLogic.UpdateModel(UserIdentity, model);
 
                 return NoContent();
@@ -220,7 +187,6 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
                 UserIdentity = new UserIdentity();
                 UserIdentity.Username = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;
                 UserIdentity.Token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "");
-
                 MessageCode = await BusinessLogic.DeleteModelAsync(UserIdentity, id);
 
                 return NoContent();
