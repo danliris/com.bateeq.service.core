@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Com.Bateeq.Service.Core.Lib.Migrations
 {
     [DbContext(typeof(CoreDbContext))]
-    [Migration("20180622084737_latest-beta-1")]
-    partial class latestbeta1
+    [Migration("20180628042314_CreateInitial")]
+    partial class CreateInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -80,7 +80,7 @@ namespace Com.Bateeq.Service.Core.Lib.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sections");
+                    b.ToTable("Bank");
                 });
 
             modelBuilder.Entity("Com.Bateeq.Service.Core.Lib.Models.MigrationModel", b =>
