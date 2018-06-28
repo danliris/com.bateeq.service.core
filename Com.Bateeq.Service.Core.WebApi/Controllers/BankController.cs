@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Com.Bateeq.Service.Core.Lib.Facades.Logic;
 using Com.Bateeq.Service.Core.Lib.Models;
 using Com.Bateeq.Service.Core.WebApi.ViewModels;
+using AutoMapper;
 
 namespace Com.Bateeq.Service.Core.WebApi.Controllers
 {
@@ -12,7 +13,7 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
     [Authorize]
     public class BankController : BaseImplController<BankLogic, Bank, BankVM>
     {
-        public BankController(BankLogic logic) : base(logic)
+        public BankController(BankLogic logic, IMapper mapper) : base(logic, mapper)
         {
         }
     }
