@@ -135,7 +135,7 @@ namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
             return Query;
         }
 
-        void Validate(TModel model)
+        protected void Validate(TModel model)
         {
             List<ValidationResult> validationResults = new List<ValidationResult>();
             ValidationContext validationContext = new ValidationContext(model);
