@@ -50,7 +50,7 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
                     Dictionary<string, object> ExsistResult =
                     new ResultFormatter(ApiVersion, StatusMessage.BAD_REQUEST_STATUS_CODE, StatusMessage.DATA_IS_EXSIST)
                     .Fail("code", "Bank with this Code has Exsist");
-                    return Created(String.Concat(Request.Path, "/", 0), ExsistResult);
+                    return BadRequest(ExsistResult);
                 }
 
                 var MessageCode = await BusinessLogic.CreateModel(UserIdentity, model);
