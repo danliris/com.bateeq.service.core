@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Com.Moonlay.NetCore.Lib.Service;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -98,11 +99,43 @@ namespace Com.Bateeq.Service.Core.WebApi.Common.Utils
             return Result;
         }
 
+        public Dictionary<string, object> Fail(string errorKey, string message)
+        {
+            Dictionary<string, string> error = new Dictionary<string, string>
+            {
+                { errorKey, message}
+            };
+            Result.Add("error", error);
+            return Result;
+        }
+
         public void AddResponseInformation(Dictionary<string, object> Result, string ApiVersion, int StatusCode, string Message)
         {
             Result.Add("apiVersion", ApiVersion);
             Result.Add("statusCode", StatusCode);
             Result.Add("message", Message);
+        }
+
+        public Dictionary<string, object> Fail(ServiceValidationExeption e)
+        {
+            Dictionary<string, object> Errors = new Dictionary<string, object>();
+
+            foreach (ValidationResult error in e.ValidationResults)
+            {
+                string key = error.MemberNames.First();
+
+                try
+                {
+                    Errors.Add(error.MemberNames.First(), JsonConvert.DeserializeObject(error.ErrorMessage));
+                }
+                catch (Exception)
+                {
+                    Errors.Add(error.MemberNames.First(), error.ErrorMessage);
+                }
+            }
+
+            Result.Add("error", Errors);
+            return Result;
         }
     }
 }
