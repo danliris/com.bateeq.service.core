@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
 {
     interface IBaseLogic<TModel>
-        where TModel : MigrationModel, IValidatableObject
+        where TModel : MigrationModel
     {
         Task<int> CreateModel(UserIdentity user, TModel model);
         Task<int> UpdateModel(UserIdentity user, TModel model);

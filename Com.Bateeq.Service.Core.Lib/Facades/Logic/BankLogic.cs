@@ -4,16 +4,22 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
 {
     public class BankLogic : BaseLogicImpl<Bank>
     {
-        private CoreDbContext CoreDbContext;
-
         public BankLogic(CoreDbContext coreDbContext) : base(coreDbContext)
         {
             CoreDbContext = coreDbContext;
+        }
+
+        public async Task<bool> IsExsist(string bankCode)
+        {
+            var result = this.CoreDbContext.Bank.Count(prop => prop.Code == bankCode && prop.IsDeleted == false) > 0;
+
+            return await Task.FromResult(result);
         }
 
         public override Tuple<List<Bank>, int, Dictionary<string, string>, List<string>> ReadModel(int Page = 1, int Size = 25, string Order = "{}", List<string> Select = null, string Keyword = null, string Filter = "{}")

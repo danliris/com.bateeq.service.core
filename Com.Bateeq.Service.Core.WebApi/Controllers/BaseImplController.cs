@@ -4,10 +4,10 @@ using Com.Bateeq.Service.Core.Lib.Facades.Logic;
 using Com.Bateeq.Service.Core.Lib.Models;
 using Com.Bateeq.Service.Core.WebApi.Common.Utils;
 using Com.Bateeq.Service.Core.WebApi.ViewModels;
+using Com.Moonlay.NetCore.Lib.Service;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,11 +15,11 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
 {
     public abstract class BaseImplController<TBusinessLogic, TModel, TViewModel> : Controller, IBaseController<TViewModel>
         where TBusinessLogic : BaseLogicImpl<TModel>
-        where TModel : MigrationModel, IValidatableObject
-        where TViewModel : BaseVM, IValidatableObject
+        where TModel : MigrationModel
+        where TViewModel : BaseVM
     {
-        TBusinessLogic BusinessLogic;
-        private string ApiVersion = "1";
+        protected TBusinessLogic BusinessLogic;
+        protected string ApiVersion = "1";
         private UserIdentity UserIdentity;
         private int MessageCode;
         private TViewModel viewModel;
@@ -136,17 +136,30 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
                 UserIdentity = new UserIdentity();
                 UserIdentity.Username = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;
                 UserIdentity.Token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "");
-                
                 TModel model = Mapper.Map<TModel>(viewModel);
+
                 MessageCode = await BusinessLogic.CreateModel(UserIdentity, model);
 
                 Dictionary<string, object> Result =
                     new ResultFormatter(ApiVersion, MessageCode, StatusMessage.OK_MESSAGE)
                     .Ok();
                 return Created(String.Concat(Request.Path, "/", 0), Result);
+
+            }
+            catch (ServiceValidationExeption e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, StatusMessage.BAD_REQUEST_STATUS_CODE, StatusMessage.BAD_REQUEST_MESSAGE)
+                    .Fail(e);
+                return BadRequest(Result);
             }
             catch (Exception e)
             {
@@ -162,6 +175,11 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
                 UserIdentity = new UserIdentity();
                 UserIdentity.Username = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;
                 UserIdentity.Token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "");
@@ -169,6 +187,13 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
                 MessageCode = await BusinessLogic.UpdateModel(UserIdentity, model);
 
                 return NoContent();
+            }
+            catch (ServiceValidationExeption e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, StatusMessage.BAD_REQUEST_STATUS_CODE, StatusMessage.BAD_REQUEST_MESSAGE)
+                    .Fail(e);
+                return BadRequest(Result);
             }
             catch (Exception e)
             {
@@ -199,6 +224,5 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
                 return StatusCode(StatusMessage.INTERNAL_ERROR_STATUS_CODE, Result);
             }
         }
-
     }
 }

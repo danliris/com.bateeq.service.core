@@ -2,6 +2,7 @@
 using Com.Bateeq.Service.Core.Lib.Common.Utils;
 using Com.Bateeq.Service.Core.Lib.Models;
 using Com.Moonlay.Models;
+using Com.Moonlay.NetCore.Lib.Service;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,9 +14,9 @@ using System.Threading.Tasks;
 namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
 {
     public abstract class BaseLogicImpl<TModel> : IBaseLogic<TModel>
-         where TModel : MigrationModel, IValidatableObject
+         where TModel : MigrationModel
     {
-        private CoreDbContext CoreDbContext;
+        protected CoreDbContext CoreDbContext;
 
         public BaseLogicImpl(CoreDbContext coreDbContext)
         {
@@ -24,6 +25,7 @@ namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
 
         public virtual async Task<int> CreateModel(UserIdentity user, TModel model)
         {
+            Validate(model);
             EntityExtension.FlagForCreate(model, user.Username, "core-service");
             CoreDbContext.Set<TModel>().Add(model);
 
@@ -74,6 +76,7 @@ namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
 
         public virtual async Task<int> UpdateModel(UserIdentity user, TModel model)
         {
+            Validate(model);
             EntityExtension.FlagForUpdate(model, user.Username, "core-service");
             CoreDbContext.Set<TModel>().Update(model);
             return await CoreDbContext.SaveChangesAsync();
@@ -130,6 +133,15 @@ namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
                     Query.OrderByDescending(b => b.GetType().GetProperty(TransformKey, IgnoreCase).GetValue(b));
             }
             return Query;
+        }
+
+        protected void Validate(TModel model)
+        {
+            List<ValidationResult> validationResults = new List<ValidationResult>();
+            ValidationContext validationContext = new ValidationContext(model);
+
+            if (!Validator.TryValidateObject(model, validationContext, validationResults, true))
+                throw new ServiceValidationExeption(validationContext, validationResults);
         }
     }
 }
