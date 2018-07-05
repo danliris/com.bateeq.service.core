@@ -13,5 +13,7 @@
         public const string BAD_REQUEST_MESSAGE = "Data does not pass validation";
         public const string CSV_ERROR_MESSAGE = "The header row of CSV file is not valid";
         public const string DATA_IS_EXSIST = "Data is Exsist";
+
+        public static string NO_FILE_ERROR_MESSAGE { get; internal set; }
     }
 }

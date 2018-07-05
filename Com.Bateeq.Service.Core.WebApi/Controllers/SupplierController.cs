@@ -4,30 +4,30 @@ using Com.Bateeq.Service.Core.Lib.Facades.Logic;
 using Com.Bateeq.Service.Core.Lib.Models;
 using Com.Bateeq.Service.Core.WebApi.ViewModels;
 using AutoMapper;
-using System;
 using System.Threading.Tasks;
 using Com.Bateeq.Service.Core.Lib.Common.Helper;
 using System.Linq;
 using System.Collections.Generic;
 using Com.Bateeq.Service.Core.WebApi.Common.Utils;
+using System;
 using Com.Moonlay.NetCore.Lib.Service;
 
 namespace Com.Bateeq.Service.Core.WebApi.Controllers
 {
     [Produces("application/json")]
     [ApiVersion("1.0")]
-    [Route("v{version:apiVersion}/master/banks")]
+    [Route("v{version:apiVersion}/master/suppliers")]
     [Authorize]
-    public class BankController : BaseImplController<BankLogic, Bank, BankVM>
+    public class SupplierController : BaseImplController<SupplierLogic, Supplier, SupplierVM>
     {
         private UserIdentity UserIdentity;
 
-        public BankController(BankLogic logic, IMapper mapper) : base(logic, mapper)
+        public SupplierController(SupplierLogic supplierLogic, IMapper mapper) : base(supplierLogic, mapper)
         {
         }
 
         [HttpPost]
-        public override async Task<ActionResult> Post([FromBody] BankVM viewModel)
+        public override async Task<ActionResult> Post([FromBody] SupplierVM viewModel)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
                     Username = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value,
                     Token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "")
                 };
-                Bank model = Mapper.Map<Bank>(viewModel);
+                Supplier model = Mapper.Map<Supplier>(viewModel);
                 var isExsist = await this.BusinessLogic.IsExsist(model.Code);
 
                 if (isExsist)

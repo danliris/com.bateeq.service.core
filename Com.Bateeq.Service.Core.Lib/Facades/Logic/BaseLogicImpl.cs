@@ -43,15 +43,9 @@ namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
 
         public virtual async Task<bool> IsExsist(int id)
         {
-            var exsist = false;
-            var model = await ReadModelById(id);
+            var result = CoreDbContext.Set<TModel>().Count(field => field.Id == id && field.IsDeleted == false) > 0;
 
-            if (model != null)
-            {
-                exsist = true;
-            }
-
-            return exsist;
+            return await Task.FromResult(result);
         }
 
         public virtual async Task<TModel> ReadModelById(int id)

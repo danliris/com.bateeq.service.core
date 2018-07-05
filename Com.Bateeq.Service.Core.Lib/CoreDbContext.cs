@@ -11,5 +11,6 @@ namespace Com.Bateeq.Service.Core.Lib
         }
 
         public DbSet<Bank> Bank { get; set; }
+        public DbSet<Supplier> Supplier { get; set; }
     }
 }

@@ -46,7 +46,8 @@ namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
                     Code = bank.Code,
                     Name = bank.Name,
                     Description = bank.Description,
-                    _id = bank._id
+                    _id = bank._id,
+                    LastModifiedUtc = bank.LastModifiedUtc
                 });
 
             Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(Order);

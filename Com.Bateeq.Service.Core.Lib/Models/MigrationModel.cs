@@ -2,7 +2,7 @@
 
 namespace Com.Bateeq.Service.Core.Lib.Models
 {
-    public class MigrationModel : StandardEntity
+    public abstract class MigrationModel : StandardEntity
     {
         public string _id { get; set; }
         public string _stamp { get; set; }
