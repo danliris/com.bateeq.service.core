@@ -40,7 +40,8 @@ namespace Com.Bateeq.Service.Core.WebApi
                 });
             //Register SubFacade
             services
-                .AddTransient<BankLogic>();
+                .AddTransient<BankLogic>()
+                .AddTransient<SupplierLogic>();
             services.AddAutoMapper();
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
