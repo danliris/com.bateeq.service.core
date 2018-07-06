@@ -13,15 +13,17 @@ using System.Threading.Tasks;
 
 namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
 {
-    public abstract class BaseLogicImpl<TModel> : IBaseLogic<TModel>
-         where TModel : MigrationModel
+    public abstract class BaseLogic<TModel>
+        where TModel : MigrationModel
     {
         protected CoreDbContext CoreDbContext;
 
-        public BaseLogicImpl(CoreDbContext coreDbContext)
+        public BaseLogic(CoreDbContext coreDbContext)
         {
             CoreDbContext = coreDbContext;
         }
+
+        public abstract Tuple<List<TModel>, int, Dictionary<string, string>, List<string>> ReadModel(int Page, int Size, string Order, List<string> Select, string Keyword, string Filter);
 
         public virtual async Task<int> CreateModel(UserIdentity user, TModel model)
         {
@@ -75,8 +77,6 @@ namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
             CoreDbContext.Set<TModel>().Update(model);
             return await CoreDbContext.SaveChangesAsync();
         }
-
-        public abstract Tuple<List<TModel>, int, Dictionary<string, string>, List<string>> ReadModel(int Page, int Size, string Order, List<string> Select, string Keyword, string Filter);
 
         public virtual IQueryable<TModel> ConfigureSearch(IQueryable<TModel> Query, List<string> SearchAttributes, string Keyword)
         {

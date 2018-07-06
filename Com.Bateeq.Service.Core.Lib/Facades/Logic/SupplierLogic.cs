@@ -4,12 +4,11 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
 {
-    public class SupplierLogic : BaseLogicImpl<Supplier>
+    public class SupplierLogic : BaseLogic<Supplier>, ILogic<Supplier>
     {
         public SupplierLogic(CoreDbContext coreDbContext) : base(coreDbContext)
         {
