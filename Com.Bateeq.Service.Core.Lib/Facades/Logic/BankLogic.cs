@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
 {
-    public class BankLogic : BaseLogicImpl<Bank>
+    public class BankLogic : BaseLogic<Bank>, ILogic<Bank>
     {
         public BankLogic(CoreDbContext coreDbContext) : base(coreDbContext)
         {

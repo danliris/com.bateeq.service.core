@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using Com.Bateeq.Service.Core.Lib.Facades.Logic;
 using Com.Bateeq.Service.Core.Lib.Models;
 using Com.Bateeq.Service.Core.WebApi.ViewModels;
 using AutoMapper;
-using System;
-using System.Threading.Tasks;
 using Com.Bateeq.Service.Core.Lib.Common.Helper;
+using System.Threading.Tasks;
 using System.Linq;
-using System.Collections.Generic;
 using Com.Bateeq.Service.Core.WebApi.Common.Utils;
+using System.Collections.Generic;
 using Com.Moonlay.NetCore.Lib.Service;
+using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Com.Bateeq.Service.Core.WebApi.Controllers
 {
@@ -18,11 +18,9 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
     [ApiVersion("1.0")]
     [Route("v{version:apiVersion}/master/banks")]
     [Authorize]
-    public class BankController : BaseImplController<BankLogic, Bank, BankVM>
+    public class BankController : BaseController<BankLogic, Bank, BankVM>, IController<BankVM>
     {
-        private UserIdentity UserIdentity;
-
-        public BankController(BankLogic logic, IMapper mapper) : base(logic, mapper)
+        public BankController(BankLogic bankLogic, IMapper mapper) : base(bankLogic, mapper)
         {
         }
 

@@ -1,31 +1,31 @@
-﻿using AutoMapper;
-using Com.Bateeq.Service.Core.Lib.Common.Helper;
-using Com.Bateeq.Service.Core.Lib.Facades.Logic;
-using Com.Bateeq.Service.Core.Lib.Models;
-using Com.Bateeq.Service.Core.WebApi.Common.Utils;
-using Com.Bateeq.Service.Core.WebApi.ViewModels;
-using Com.Moonlay.NetCore.Lib.Service;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Com.Bateeq.Service.Core.Lib.Facades.Logic;
+using Com.Bateeq.Service.Core.Lib.Models;
+using Com.Bateeq.Service.Core.WebApi.ViewModels;
+using AutoMapper;
+using Com.Bateeq.Service.Core.Lib.Common.Helper;
+using Com.Bateeq.Service.Core.WebApi.Common.Utils;
+using Com.Moonlay.NetCore.Lib.Service;
 
 namespace Com.Bateeq.Service.Core.WebApi.Controllers
 {
-    public abstract class BaseImplController<TBusinessLogic, TModel, TViewModel> : Controller, IBaseController<TViewModel>
-        where TBusinessLogic : BaseLogicImpl<TModel>
+    public abstract class BaseController<TBusinessLogic, TModel, TViewModel> : Controller
+        where TBusinessLogic : BaseLogic<TModel>
         where TModel : MigrationModel
         where TViewModel : BaseVM
     {
         protected TBusinessLogic BusinessLogic;
         protected string ApiVersion = "1";
-        private UserIdentity UserIdentity;
+        protected UserIdentity UserIdentity;
         private int MessageCode;
         private TViewModel viewModel;
         private IMapper Mapper;
 
-        public BaseImplController(TBusinessLogic businessLogic, IMapper mapper)
+        public BaseController(TBusinessLogic businessLogic, IMapper mapper)
         {
             BusinessLogic = businessLogic;
             Mapper = mapper;

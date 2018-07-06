@@ -2,13 +2,13 @@
 using Com.Bateeq.Service.Core.Lib.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Com.Bateeq.Service.Core.Lib.Facades.Logic
 {
-    interface IBaseLogic<TModel>
+    public interface ILogic<TModel>
         where TModel : MigrationModel
     {
         Task<int> CreateModel(UserIdentity user, TModel model);

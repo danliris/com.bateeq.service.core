@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Com.Bateeq.Service.Core.Lib.Facades.Logic;
 using Com.Bateeq.Service.Core.Lib.Models;
 using Com.Bateeq.Service.Core.WebApi.ViewModels;
 using AutoMapper;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Com.Bateeq.Service.Core.Lib.Common.Helper;
-using System.Linq;
-using System.Collections.Generic;
 using Com.Bateeq.Service.Core.WebApi.Common.Utils;
-using System;
 using Com.Moonlay.NetCore.Lib.Service;
 
 namespace Com.Bateeq.Service.Core.WebApi.Controllers
@@ -18,10 +19,8 @@ namespace Com.Bateeq.Service.Core.WebApi.Controllers
     [ApiVersion("1.0")]
     [Route("v{version:apiVersion}/master/suppliers")]
     [Authorize]
-    public class SupplierController : BaseImplController<SupplierLogic, Supplier, SupplierVM>
+    public class SupplierController : BaseController<SupplierLogic, Supplier, SupplierVM>, IController<SupplierVM>
     {
-        private UserIdentity UserIdentity;
-
         public SupplierController(SupplierLogic supplierLogic, IMapper mapper) : base(supplierLogic, mapper)
         {
         }
