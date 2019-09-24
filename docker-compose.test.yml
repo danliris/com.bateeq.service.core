@@ -2,11 +2,11 @@ version: '3'
 
 services:
   Bateeq.test.data:
-    image: efrataretailindo/Bateeq-test-data:latest
+    image: efrataretailindo/bateeq-test-data:latest
     environment:
       - DB_CONNECTIONSTRING=mongodb://mongodb:27017
-  dl.auth.webapi:
-    image: efrataretailindo/dl-auth-webapi:latest
+  bateeq.auth.webapi:
+    image: efrataretailindo/bateeq-auth-webapi:latest
     environment:
       - DB_CONNECTIONSTRING=mongodb://mongodb:27017
       - AUTH_SECRET=BateeqTESTENVIRONMENT
