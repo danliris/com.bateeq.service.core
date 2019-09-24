@@ -1,0 +1,10 @@
+FROM microsoft/aspnetcore-build:2.0.2
+WORKDIR /app
+
+COPY Com.Bateeq.Service.Core.Lib/*.csproj ./Com.Bateeq.Service.Core.Lib/
+COPY Com.Bateeq.Service.Core.WebApi/*.csproj ./Com.Bateeq.Service.Core.WebApi/
+RUN dotnet restore ./Com.Bateeq.Service.Core.WebApi/
+
+COPY Com.Bateeq.Service.Core.Lib/. ./Com.Bateeq.Service.Core.Lib/
+COPY Com.Bateeq.Service.Core.WebApi/. ./Com.Bateeq.Service.Core.WebApi/
+RUN dotnet publish ./Com.Bateeq.Service.Core.WebApi/ --output /out/ --configuration Release
