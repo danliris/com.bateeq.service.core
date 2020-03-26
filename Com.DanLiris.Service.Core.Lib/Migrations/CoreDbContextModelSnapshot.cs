@@ -214,49 +214,60 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("AccountCOA")
-                        .HasMaxLength(255);
+                        .HasMaxLength(64);
 
                     b.Property<string>("AccountName")
-                        .HasMaxLength(500);
+                        .HasMaxLength(512);
 
                     b.Property<string>("AccountNumber")
-                        .HasMaxLength(100);
+                        .HasMaxLength(128);
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("BankAddress");
+                    b.Property<string>("BankAddress")
+                        .HasMaxLength(512);
+
+                    b.Property<string>("BankCode")
+                        .HasMaxLength(64);
 
                     b.Property<string>("BankName")
-                        .HasMaxLength(500);
+                        .HasMaxLength(512);
 
                     b.Property<string>("Code")
-                        .HasMaxLength(100);
+                        .HasMaxLength(64);
 
-                    b.Property<string>("CurrencyCode");
+                    b.Property<string>("CurrencyCode")
+                        .HasMaxLength(32);
 
-                    b.Property<string>("CurrencyDescription");
+                    b.Property<string>("CurrencyDescription")
+                        .HasMaxLength(1024);
 
                     b.Property<int?>("CurrencyId");
 
                     b.Property<double>("CurrencyRate");
 
-                    b.Property<string>("CurrencySymbol");
+                    b.Property<string>("CurrencySymbol")
+                        .HasMaxLength(8);
 
-                    b.Property<string>("DivisionCode");
+                    b.Property<string>("DivisionCode")
+                        .HasMaxLength(32);
 
                     b.Property<int?>("DivisionId");
 
-                    b.Property<string>("DivisionName");
+                    b.Property<string>("DivisionName")
+                        .HasMaxLength(64);
 
-                    b.Property<string>("Fax");
+                    b.Property<string>("Fax")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("Phone");
+                    b.Property<string>("Phone")
+                        .HasMaxLength(128);
 
                     b.Property<string>("SwiftCode")
-                        .HasMaxLength(100);
+                        .HasMaxLength(256);
 
                     b.Property<string>("UId")
-                        .HasMaxLength(255);
+                        .HasMaxLength(128);
 
                     b.Property<string>("_CreatedAgent")
                         .IsRequired()
@@ -1448,6 +1459,8 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("Active");
+
+                    b.Property<string>("COACodeCredit");
 
                     b.Property<string>("Description");
 
