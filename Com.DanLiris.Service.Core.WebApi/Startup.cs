@@ -2,6 +2,7 @@
 using Com.DanLiris.Service.Core.Lib;
 using Com.DanLiris.Service.Core.Lib.Helpers.IdentityService;
 using Com.DanLiris.Service.Core.Lib.Helpers.ValidateService;
+using Com.DanLiris.Service.Core.Lib.Interfaces;
 using Com.DanLiris.Service.Core.Lib.Services;
 using Com.DanLiris.Service.Core.Lib.Services.Account_and_Roles;
 using Com.DanLiris.Service.Core.Lib.Services.MachineSpinning;
@@ -91,7 +92,24 @@ namespace Com.DanLiris.Service.Core.WebApi
                 .AddScoped<StandardMinuteValueService>()
                 .AddTransient<IMachineSpinningService, MachineSpinningService>()
                 .AddScoped<RolesService>()
-                .AddScoped<SizeService>();
+                .AddScoped<SizeService>()
+                .AddTransient<ArticleCategoryService>()
+                .AddTransient<ArticleMaterialService>()
+                .AddTransient<ArticleProcesService>()
+                .AddTransient<ArticleMaterialCompositionService>()
+                .AddTransient<ArticleCollectionService>()
+                .AddTransient<ArticleSeasonService>()
+                .AddTransient<ArticleCounterService>()
+                .AddTransient<ArticleSubCounterService>()
+                .AddTransient<ItemService>()
+                .AddTransient<DivisionService>()
+                .AddTransient<ArticleColorService>()
+                .AddTransient<StorageService>()
+                .AddTransient<ExpeditionService>()
+                .AddTransient<IAzureImageService, AzureImageService>()
+                .AddTransient<StoreService>()
+                .AddTransient<BankService>()
+                .AddTransient<ModuleService>();
 
 
             RegisterServices(services);

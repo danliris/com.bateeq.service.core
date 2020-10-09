@@ -26,6 +26,14 @@ namespace Com.DanLiris.Service.Core.Lib.Models
 
         public string DivisionName { get; set; }
 
+        [StringLength(255)]
+        public string Address { get; set; }
+
+        [StringLength(255)]
+        public string Phone { get; set; }
+
+        public bool IsCentral { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             List<ValidationResult> validationResult = new List<ValidationResult>();
