@@ -39,6 +39,13 @@ namespace Com.DanLiris.Service.Core.WebApi
                 .AddScoped<IValidateService, ValidateService>();
         }
 
+        private void RegisterEndPoint()
+        {
+
+            Com.DanLiris.Service.Core.Lib.Helpers.APIEndpoint.StorageAccountName = Configuration.GetValue<string>("StorageAccountName") ?? Configuration["StorageAccountName"];
+            Com.DanLiris.Service.Core.Lib.Helpers.APIEndpoint.StorageAccountKey = Configuration.GetValue<string>("StorageAccountKey") ?? Configuration["StorageAccountKey"];
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -81,6 +88,7 @@ namespace Com.DanLiris.Service.Core.WebApi
                 .AddScoped<StandardTestsService>()
                 .AddScoped<LampStandardService>()
                 .AddScoped<PermissionService>()
+                .AddTransient<CardTypeService>()
                 .AddScoped<ColorTypeService>()
                 .AddScoped<RolesService>()
                 .AddScoped<GarmentProductService>()
@@ -113,6 +121,7 @@ namespace Com.DanLiris.Service.Core.WebApi
 
 
             RegisterServices(services);
+            RegisterEndPoint();
 
             services
                 .AddApiVersioning(options =>

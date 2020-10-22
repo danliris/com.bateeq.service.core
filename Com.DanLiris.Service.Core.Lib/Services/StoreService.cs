@@ -43,16 +43,17 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             /* Const Select */
             List<string> SelectedFields = new List<string>()
             {
-                 "_id","Code", "Name", "description"
+                 "_id","code", "name", "description","address","city","closedDate","monthlyTotalCost","onlineOffline","openedDate",
+                 "pic","phone","salesCapital","salesCategory","salesTarget","status","storeArea","storeCategory","storeWide"
             };
 
-            Query = Query
-                .Select(b => new Store
-                {
-                    Id = b.Id,
-                    Code = b.Code,
-                    Name = b.Name
-                });
+            //Query = Query
+            //    .Select(b => new Store
+            //    {
+            //        Id = b.Id,
+            //        Code = b.Code,
+            //        Name = b.Name
+            //    });
 
             /* Order */
             if (OrderDictionary.Count.Equals(0))
@@ -98,7 +99,22 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             seasonVM._LastModifiedAgent = season._LastModifiedAgent;
             seasonVM.code = season.Code;
             seasonVM.name = season.Name;
-
+            seasonVM.address = season.Address;
+            seasonVM.city = season.City;
+            seasonVM.closedDate = season.ClosedDate;
+            seasonVM.description = season.Description;
+            seasonVM.monthlyTotalCost = season.MonthlyTotalCost;
+            seasonVM.onlineOffline = season.OnlineOffline;
+            seasonVM.openedDate = season.OpenedDate;
+            seasonVM.phone = season.Phone;
+            seasonVM.pic = season.Pic;
+            seasonVM.salesCapital = season.SalesCapital;
+            seasonVM.salesCategory = season.SalesCategory;
+            seasonVM.salesTarget = season.SalesTarget;
+            seasonVM.status = season.Status;
+            seasonVM.storeArea = season.StoreArea;
+            seasonVM.storeCategory = season.StoreCategory;
+            seasonVM.storeWide = season.StoreWide;
 
             return seasonVM;
         }
@@ -119,6 +135,22 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             season._LastModifiedAgent = seasonVM._LastModifiedAgent;
             season.Code = seasonVM.code;
             season.Name = seasonVM.name;
+            season.Address = seasonVM.address;
+            season.City = season.City;
+            season.ClosedDate = seasonVM.closedDate;
+            season.Description = seasonVM.description;
+            season.MonthlyTotalCost = seasonVM.monthlyTotalCost;
+            season.OnlineOffline = seasonVM.onlineOffline;
+            season.OpenedDate = seasonVM.openedDate;
+            season.Phone = seasonVM.phone;
+            season.Pic = seasonVM.pic;
+            season.SalesCapital = seasonVM.salesCapital;
+            season.SalesCategory = seasonVM.salesCategory;
+            season.SalesTarget = seasonVM.salesTarget;
+            season.Status = seasonVM.status;
+            season.StoreArea = seasonVM.storeArea;
+            season.StoreCategory = seasonVM.storeCategory;
+            season.StoreWide = seasonVM.storeWide;
 
             return season;
         }
@@ -139,5 +171,56 @@ namespace Com.DanLiris.Service.Core.Lib.Services
                          select a).ToListAsync();
             return store;
         }
+
+
+        public Task<Store> GetStoreByCode(string code)
+        {
+            var store = (from a in DbContext.Stores
+                         where a.Code.Contains((string.IsNullOrWhiteSpace(code) ? a.Code : code))
+                         select a).FirstOrDefaultAsync();
+            return store;
+        }
+
+        public Task<StoreStorageViewModel> GetStoreStorageByCode(string code)
+        {
+            var store = (from a in DbContext.Stores
+                         join b in DbContext.Storages on a.Code equals b.Code
+                         where a.Code.Contains((string.IsNullOrWhiteSpace(code) ? a.Code : code))
+                         select new StoreStorageViewModel
+                         {
+                             address = a.Address,
+                             city = a.City,
+                             closedDate = a.ClosedDate,
+                             code = a.Code,
+                             description = a.Description,
+                             Id = a.Id,
+                             monthlyTotalCost = a.MonthlyTotalCost,
+                             name = a.Name,
+                             onlineOffline = a.OnlineOffline,
+                             openedDate = a.OpenedDate,
+                             phone = a.Phone,
+                             pic = a.Pic,
+                             salesCapital = a.SalesCapital,
+                             salesCategory = a.SalesCategory,
+                             salesTarget = a.SalesTarget,
+                             status = a.Status,
+                             storeArea = a.StoreArea,
+                             storeCategory = a.StoreCategory,
+                             storeWide = a.StoreWide,
+                             storage = new StorageViewModel
+                             {
+                                 address = b.Address,
+                                 code = b.Code,
+                                 description = b.Description,
+                                 isCentral = b.IsCentral,
+                                 name = b.Name,
+                                 phone = b.Phone,
+                                 _id = b.Id
+                             }
+
+                         }).FirstOrDefaultAsync();
+            return store;
+        }
     }
+
 }

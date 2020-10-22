@@ -89,7 +89,7 @@ namespace Com.DanLiris.Service.Core.Lib
         public DbSet<ArticleSubProces> ArticleSubProcess { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<Module> Modules { get; set; }
-        public DbSet<ModuleDestination> ModuleDesstinations { get; set; }
+        public DbSet<ModuleDestination> ModuleDestinations { get; set; }
         public DbSet<ModuleSource> ModuleSources { get; set; }
         public DbSet<Expedition> Expeditions { get; set; }
         public DbSet<Store> Stores { get; set; }

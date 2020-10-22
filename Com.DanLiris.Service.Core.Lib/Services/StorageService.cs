@@ -88,7 +88,7 @@ namespace Com.DanLiris.Service.Core.Lib.Services
 
 
             IQueryable<StorageViewModel> Query = (from a in DbContext.Modules
-                                                  join b in DbContext.ModuleDesstinations on a.Id equals b.ModuleId
+                                                  join b in DbContext.ModuleDestinations on a.Id equals b.ModuleId
                                                   join c in DbContext.Storages on b.DestinationValue equals c.UId
 
                                                   where
@@ -199,7 +199,6 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             storageVM.unit._id = storage.UnitId;
             storageVM.unit.name = storage.UnitName;
             storageVM.unit.division.Name = storage.DivisionName;
-            storageVM.isCentral = storage.IsCentral;
 
             return storageVM;
         }
@@ -221,7 +220,6 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             storage.Code = storageVM.code;
             storage.Name = storageVM.name;
             storage.Description = storageVM.description;
-            storage.IsCentral = storageVM.isCentral;
 
             if (!Equals(storageVM.unit, null))
             {

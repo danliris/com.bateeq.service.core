@@ -4,6 +4,7 @@ using Com.DanLiris.Service.Core.Lib.Services;
 using Com.DanLiris.Service.Core.Lib.ViewModels;
 using Com.DanLiris.Service.Core.WebApi.Helpers;
 using Com.Moonlay.NetCore.Lib.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -160,6 +161,28 @@ namespace Com.DanLiris.Service.Core.WebApi.Controllers.v1.BasicControllers
             }
         }
 
+        [HttpGet("byCode/{code}")]
+        public IActionResult GetByCode([FromRoute] string code)
+        {
+            try
+            {
+                ItemViewModel Data = service.GetByCode(code);
+                //List<ItemViewModel> Data = service.GetCode(code);
+
+                Dictionary<string, object> Result =
+                     new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
+                     .Ok(Data);
+
+                return Ok(Result);
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
 
         [HttpGet("readAll/{image}")]
         public async Task<IActionResult> GetImage([FromRoute] string image)
@@ -217,7 +240,7 @@ namespace Com.DanLiris.Service.Core.WebApi.Controllers.v1.BasicControllers
 
                 // service.Username = User.Claims.Single(p => p.Type.Equals("username")).Value;
 
-                ItemViewModelRead Data = await service.GetCode2(code);
+                List<ItemViewModelRead> Data = await service.GetCode2(code);
 
                 Dictionary<string, object> Result =
                     new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
@@ -277,7 +300,7 @@ namespace Com.DanLiris.Service.Core.WebApi.Controllers.v1.BasicControllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("post-binary")]
         public async Task<IActionResult> PostBinary()
         {
             using (var sr = new StreamReader(Request.Body))

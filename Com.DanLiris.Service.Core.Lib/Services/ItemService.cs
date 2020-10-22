@@ -169,9 +169,16 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             //itemVM.dataDestination.name = item.Name;
             //itemVM.dataDestination.Uom = item.Uom;
             //itemVM.dataDestination.Size = item.Size;
+            itemVM.DomesticRetail = item.DomesticRetail;
             itemVM.DomesticCOGS = item.DomesticCOGS;
-            itemVM.DomesticSale = item.DomesticCOGS;
+            itemVM.DomesticSale = item.DomesticSale;
+            itemVM.DomesticWholesale = item.DomesticWholesale;
             itemVM.InternationalSale = item.InternationalSale;
+            itemVM.InternationalWholesale = item.InternationalWholesale;
+            itemVM.InternationalRetail = item.InternatioalRetail;
+            itemVM.InternationalCOGS = item.InternatinalCOGS;
+            itemVM.price = item.DomesticCOGS;
+
             itemVM.dataDestination = new List<ItemViewModelRead>{
                 new ItemViewModelRead {
                     ArticleRealizationOrder = item.ArticleRealizationOrder,
@@ -235,6 +242,13 @@ namespace Com.DanLiris.Service.Core.Lib.Services
                 name = item.CategoryDocName
             };
 
+            //itemVM.color = new ItemArticleColorViewModel
+            //{
+            //    _id = item.ArticleColorsId,
+            //    code = item.ColorCode,
+            //    name = item.ColorDocName
+            //};
+
             ////itemVM.ProcessDocName = item.ProcessDocName;
             //itemVM.MaterialDocName = item.MaterialDocName;
             //itemVM.MaterialCompositionDocName = item.MaterialCompositionDocName;
@@ -281,6 +295,13 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             {
                 item.ArticleProcessId = 0;
                 item.ProcessDocCode = null;
+            }
+
+            if (!Equals(itemVM.color, null))
+            {
+                item.ColorCode = itemVM.color.code;
+                item.ArticleColorsId = itemVM.color._id;
+                item.ColorDocName = itemVM.color.name;
             }
 
             if (!Equals(itemVM.materials, null))
@@ -397,7 +418,7 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             //return 
             //    DbContext.Items.AsNoTracking().FirstOrDefaultAsync(x => x.Id == Id);
             Item item = DbContext.Items.FirstOrDefault(x => x.Id == Id && x._IsDeleted.Equals(false));
-            if (item.ImagePath != null)
+            if (!string.IsNullOrWhiteSpace(item.ImagePath))
             {
                 item.ImgFile = await this.AzureImageService.DownloadImage(item.GetType().Name, item.ImagePath);
             }
@@ -459,7 +480,7 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             var data = DbSet.Where(x => x.ArticleRealizationOrder.Equals(ro) && x.Name.Equals(name) && x.Code.Equals(code)).FirstOrDefault();
             return MapToViewModel(data);
         }
-        public Task<ItemViewModelRead> GetCode2(string code)
+        public Task<List<ItemViewModelRead>> GetCode2(string code)
         {
 
             var item = DbContext.Items.Where(x => x.Code == code);
@@ -484,7 +505,7 @@ namespace Com.DanLiris.Service.Core.Lib.Services
                 InternationalSale = x.InternationalSale,
                 InternationalWholesale = x.InternationalWholesale,
 
-            }).FirstOrDefaultAsync();
+            }).ToListAsync();
         }
 
         public Task<List<ItemViewModel>> GetCode(string code)
@@ -500,6 +521,17 @@ namespace Com.DanLiris.Service.Core.Lib.Services
                 price = x.DomesticSale
 
             }).ToListAsync();
+        }
+
+        public ItemViewModel GetByCode(string code)
+        {
+            var item = DbContext.Items.Where(y => y.Code == code);
+            return item.Select(y => new ItemViewModel()
+            {
+                _id = y.Id,
+                //    price = y.DomesticSale
+
+            }).FirstOrDefault();
         }
 
         private IAzureImageService AzureImageService
@@ -607,6 +639,9 @@ namespace Com.DanLiris.Service.Core.Lib.Services
                 ItemOld.ArticleProcessId = model.process._id;
                 ItemOld.ProcessDocCode = model.process.code;
                 ItemOld.ProcessDocName = model.process.name;
+                ItemOld.ArticleMaterialsId = model.materials._id;
+                ItemOld.MaterialDocCode = model.materials.code;
+                ItemOld.MaterialDocName = model.materials.name;
                 ItemOld.ArticleMaterialCompositionsId = model.materialCompositions._id;
                 ItemOld.MaterialCompositionDocCode = model.materialCompositions.code;
                 ItemOld.MaterialCompositionDocName = model.materialCompositions.name;
@@ -622,6 +657,12 @@ namespace Com.DanLiris.Service.Core.Lib.Services
                 ItemOld.ArticleSubCountersId = model.subCounters._id;
                 ItemOld.StyleDocCode = model.subCounters.code;
                 ItemOld.StyleDocName = model.subCounters.name;
+                ItemOld.ArticleColorsId = model.color._id;
+                ItemOld.ColorCode = model.color.code;
+                ItemOld.ColorDocName = model.color.name;
+                ItemOld.ArticleCategoriesId = model.categories._id;
+                ItemOld.CategoryDocCode = model.categories.code;
+                ItemOld.CategoryDocName = model.categories.name;
                 ItemOld.ImagePath = IMagePath;
                 //ItemOld.ImgFile = model.ImageFile;
 
