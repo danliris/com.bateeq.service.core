@@ -11,9 +11,10 @@ using System;
 namespace Com.DanLiris.Service.Core.Lib.Migrations
 {
     [DbContext(typeof(CoreDbContext))]
-    partial class CoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201007151510_node_migration")]
+    partial class node_migration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2944,7 +2945,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
 
                     b.HasIndex("ModuleId");
 
-                    b.ToTable("ModuleDestinations");
+                    b.ToTable("ModuleDesstinations");
                 });
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.Module.ModuleSource", b =>

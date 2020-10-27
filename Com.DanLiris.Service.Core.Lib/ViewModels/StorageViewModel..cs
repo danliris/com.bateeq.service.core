@@ -12,6 +12,10 @@ namespace Com.DanLiris.Service.Core.Lib.ViewModels
 
         public string description { get; set; }
 
+        public string address { get; set; }
+        public string phone { get; set; }
+        public bool isCentral { get; set; }
+
         public StorageUnitViewModel unit { get; set; }
     }
 

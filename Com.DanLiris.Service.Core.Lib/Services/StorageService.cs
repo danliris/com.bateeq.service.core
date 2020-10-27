@@ -83,6 +83,100 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             return Tuple.Create(Data, TotalData, OrderDictionary, SelectedFields);
         }
 
+        public Tuple<List<StorageViewModel>, int, Dictionary<string, string>> GetDestination(int Page = 1, int Size = 25, string Order = "{}", List<string> select = null, string Keyword = null, string Filter = "{}")
+        {
+
+
+            IQueryable<StorageViewModel> Query = (from a in DbContext.Modules
+                                                  join b in DbContext.ModuleDestinations on a.Id equals b.ModuleId
+                                                  join c in DbContext.Storages on b.DestinationValue equals c.UId
+
+                                                  where
+                                                  a.Code == Keyword
+
+                                                  select new StorageViewModel
+                                                  {
+                                                      code = c.Code,
+                                                      name = c.Name,
+                                                      UId = c.UId,
+                                                      _id = c.Id
+                                                  }
+
+                ).AsQueryable();
+
+
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(Filter);
+            //Query = ConfigureFilter(Query, FilterDictionary);
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(Order);
+
+
+
+            //List<string> SelectedFields = new List<string>()
+            //{
+            //    "CorrectionNo", "CorrectionType", "SupplierName", "DONo"
+            //};
+
+
+
+
+
+            /* Pagination */
+            Pageable<StorageViewModel> pageable = new Pageable<StorageViewModel>(Query, Page - 1, Size);
+            List<StorageViewModel> Data = pageable.Data.ToList<StorageViewModel>();
+
+            int TotalData = pageable.TotalCount;
+
+            return Tuple.Create(Data, TotalData, OrderDictionary);
+        }
+
+        public Tuple<List<StorageViewModel>, int, Dictionary<string, string>> GetSource(int Page = 1, int Size = 25, string Order = "{}", List<string> select = null, string Keyword = null, string Filter = "{}")
+        {
+
+
+            IQueryable<StorageViewModel> Query = (from a in DbContext.Modules
+                                                  join b in DbContext.ModuleSources on a.Id equals b.ModuleId
+                                                  join c in DbContext.Storages on b.SourceValue equals c.UId
+
+                                                  where
+                                                  a.Code == Keyword
+
+                                                  select new StorageViewModel
+                                                  {
+                                                      code = c.Code,
+                                                      name = c.Name,
+                                                      UId = c.UId,
+                                                      _id = c.Id
+                                                  }
+
+                ).AsQueryable();
+
+
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(Filter);
+            //Query = ConfigureFilter(Query, FilterDictionary);
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(Order);
+
+
+
+            //List<string> SelectedFields = new List<string>()
+            //{
+            //    "CorrectionNo", "CorrectionType", "SupplierName", "DONo"
+            //};
+
+
+
+
+
+            /* Pagination */
+            Pageable<StorageViewModel> pageable = new Pageable<StorageViewModel>(Query, Page - 1, Size);
+            List<StorageViewModel> Data = pageable.Data.ToList<StorageViewModel>();
+
+            int TotalData = pageable.TotalCount;
+
+            return Tuple.Create(Data, TotalData, OrderDictionary);
+        }
+
         public StorageViewModel MapToViewModel(Storage storage)
         {
             StorageViewModel storageVM = new StorageViewModel();
@@ -179,6 +273,24 @@ namespace Com.DanLiris.Service.Core.Lib.Services
                     Name = entity.UnitName
                 }
             }).ToListAsync();
+        }
+
+        public Task<List<StorageViewModel>> GetStorage1(string storageId)
+        {
+
+            var storage = DbContext.Storages.Where(x => x.UId == storageId);
+            return storage.Select(x => new StorageViewModel()
+            {
+                _id = x.Id,
+                code = x.Code,
+                name = x.Name
+            }).ToListAsync();
+        }
+
+        public Storage GetStoragebyCode(string Code)
+        {
+            var storage = DbSet.Where(x => x.Code == Code).FirstOrDefault();
+            return storage;
         }
     }
 }
