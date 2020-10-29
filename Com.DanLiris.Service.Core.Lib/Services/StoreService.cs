@@ -43,17 +43,18 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             /* Const Select */
             List<string> SelectedFields = new List<string>()
             {
-                 "_id","code", "name", "description","address","city","closedDate","monthlyTotalCost","onlineOffline","openedDate",
+                 "code", "name", "description","address","city","closedDate","monthlyTotalCost","onlineOffline","openedDate",
                  "pic","phone","salesCapital","salesCategory","salesTarget","status","storeArea","storeCategory","storeWide"
             };
 
-            //Query = Query
-            //    .Select(b => new Store
-            //    {
-            //        Id = b.Id,
-            //        Code = b.Code,
-            //        Name = b.Name
-            //    });
+            Query = Query
+                .Select(b => new Store
+                {
+                    Id = b.Id,
+                    Code = b.Code,
+                    Name = b.Name,
+                    Address = b.Address
+                });
 
             /* Order */
             if (OrderDictionary.Count.Equals(0))
