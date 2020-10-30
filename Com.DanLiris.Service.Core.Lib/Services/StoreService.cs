@@ -43,7 +43,7 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             /* Const Select */
             List<string> SelectedFields = new List<string>()
             {
-                 "code", "name", "description","address","city","closedDate","monthlyTotalCost","onlineOffline","openedDate",
+                 "Id","code", "name", "description","address","city","closedDate","monthlyTotalCost","onlineOffline","openedDate",
                  "pic","phone","salesCapital","salesCategory","salesTarget","status","storeArea","storeCategory","storeWide"
             };
 
