@@ -43,8 +43,8 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             /* Const Select */
             List<string> SelectedFields = new List<string>()
             {
-                 "Id","code", "name", "description","address","city","closedDate","monthlyTotalCost","onlineOffline","openedDate",
-                 "pic","phone","salesCapital","salesCategory","salesTarget","status","storeArea","storeCategory","storeWide"
+                 "Id","code", "name", "description","address","city","closedDate","monthlyTotalCost","OnlineOffline","openedDate",
+                 "pic","phone","salesCapital","SalesCategory","salesTarget","status","storeArea","StoreCategory","storeWide"
             };
 
             Query = Query
@@ -53,7 +53,12 @@ namespace Com.DanLiris.Service.Core.Lib.Services
                     Id = b.Id,
                     Code = b.Code,
                     Name = b.Name,
-                    Address = b.Address
+                    Address = b.Address,
+                    StoreCategory = b.StoreCategory,
+                    OnlineOffline = b.OnlineOffline,
+                    Status = b.Status,
+                    SalesCategory = b.SalesCategory,
+                    
                 });
 
             /* Order */
