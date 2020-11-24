@@ -44,7 +44,7 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             List<string> SelectedFields = new List<string>()
             {
                  "Id","code", "name", "description","address","city","closedDate","monthlyTotalCost","OnlineOffline","openedDate",
-                 "pic","phone","salesCapital","SalesCategory","salesTarget","status","storeArea","StoreCategory","storeWide"
+                 "pic","phone","salesCapital","SalesCategory","salesTarget","status","storeArea","StoreCategory","storeWide","Longitude","Latitude"
             };
 
             Query = Query
@@ -58,6 +58,8 @@ namespace Com.DanLiris.Service.Core.Lib.Services
                     OnlineOffline = b.OnlineOffline,
                     Status = b.Status,
                     SalesCategory = b.SalesCategory,
+                    Longitude = b.Longitude,
+                    Latitude = b.Latitude
                     
                 });
 
