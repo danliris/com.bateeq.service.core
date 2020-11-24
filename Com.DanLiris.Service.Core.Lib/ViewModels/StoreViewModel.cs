@@ -25,5 +25,7 @@ namespace Com.DanLiris.Service.Core.Lib.ViewModels
         public string storeArea { get; set; }
         public string storeCategory { get; set; }
         public string storeWide { get; set; }
+        public float longitude { get; set; }
+        public float latitude { get; set; }
     }
 }

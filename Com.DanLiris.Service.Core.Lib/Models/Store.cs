@@ -39,6 +39,10 @@ namespace Com.DanLiris.Service.Core.Lib.Models
         public string StoreCategory { get; set; }
         [StringLength(255)]
         public string StoreWide { get; set; }
+        public float Longitude { get; set; }
+        public float Latitude { get; set; }
+
+
         [StringLength(255)]
         public string Uid { get; set; }
 
