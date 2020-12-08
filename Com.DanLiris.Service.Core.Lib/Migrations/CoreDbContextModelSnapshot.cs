@@ -306,6 +306,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.ToTable("AccountBanks");
                 });
 
+
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.ArticleCategory", b =>
                 {
                     b.Property<int>("Id")
@@ -314,6 +315,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<bool>("Active");
 
                     b.Property<string>("Code")
+
                         .HasMaxLength(255);
 
                     b.Property<DateTimeOffset?>("Date");
@@ -323,6 +325,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
 
                     b.Property<string>("Name")
                         .HasMaxLength(255);
+
 
                     b.Property<string>("UId")
                         .HasMaxLength(255);
@@ -360,11 +363,14 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<DateTime>("_LastModifiedUtc");
 
                     b.HasKey("Id");
+
 
                     b.ToTable("ArticleCategories");
                 });
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.ArticleCollection", b =>
+
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -372,6 +378,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<bool>("Active");
 
                     b.Property<string>("Code")
+
                         .HasMaxLength(255);
 
                     b.Property<DateTimeOffset?>("Date");
@@ -381,6 +388,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
 
                     b.Property<string>("Name")
                         .HasMaxLength(255);
+
 
                     b.Property<string>("UId")
                         .HasMaxLength(255);
@@ -418,16 +426,19 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<DateTime>("_LastModifiedUtc");
 
                     b.HasKey("Id");
+
 
                     b.ToTable("ArticleCollections");
                 });
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.ArticleColor", b =>
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("Active");
+
 
                     b.Property<string>("Code")
                         .HasMaxLength(255);
@@ -439,6 +450,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
 
                     b.Property<string>("Name")
                         .HasMaxLength(255);
+
 
                     b.Property<string>("UId")
                         .HasMaxLength(255);
@@ -476,11 +488,13 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<DateTime>("_LastModifiedUtc");
 
                     b.HasKey("Id");
+
 
                     b.ToTable("ArticleColors");
                 });
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.ArticleCounter", b =>
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -488,6 +502,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<bool>("Active");
 
                     b.Property<string>("Code")
+
                         .HasMaxLength(255);
 
                     b.Property<DateTimeOffset?>("Date");
@@ -534,16 +549,20 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<DateTime>("_LastModifiedUtc");
 
                     b.HasKey("Id");
+
 
                     b.ToTable("ArticleCounters");
                 });
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.ArticleMaterial", b =>
+
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("Active");
+
 
                     b.Property<string>("Code")
                         .HasMaxLength(255);
@@ -555,6 +574,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
 
                     b.Property<string>("Name")
                         .HasMaxLength(255);
+
 
                     b.Property<string>("UId")
                         .HasMaxLength(255);
@@ -592,16 +612,19 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<DateTime>("_LastModifiedUtc");
 
                     b.HasKey("Id");
+
 
                     b.ToTable("ArticleMaterials");
                 });
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.ArticleMaterialComposition", b =>
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("Active");
+
 
                     b.Property<string>("Code")
                         .HasMaxLength(255);
@@ -651,10 +674,12 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
 
                     b.HasKey("Id");
 
+
                     b.ToTable("ArticleMaterialCompositions");
                 });
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.ArticleMotif", b =>
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -662,6 +687,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<bool>("Active");
 
                     b.Property<string>("Code")
+
                         .HasMaxLength(255);
 
                     b.Property<DateTimeOffset?>("Date");
@@ -712,6 +738,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
 
                     b.HasKey("Id");
 
+
                     b.ToTable("ArticleMotifs");
                 });
 
@@ -723,6 +750,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<bool>("Active");
 
                     b.Property<string>("Code")
+
                         .HasMaxLength(255);
 
                     b.Property<DateTimeOffset?>("Date");
@@ -769,16 +797,19 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<DateTime>("_LastModifiedUtc");
 
                     b.HasKey("Id");
+
 
                     b.ToTable("ArticleProcess");
                 });
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.ArticleSeason", b =>
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("Active");
+
 
                     b.Property<string>("Code")
                         .HasMaxLength(255);
@@ -827,16 +858,19 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<DateTime>("_LastModifiedUtc");
 
                     b.HasKey("Id");
+
 
                     b.ToTable("ArticleSeasons");
                 });
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.ArticleSize", b =>
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("Active");
+
 
                     b.Property<string>("Code")
                         .HasMaxLength(255);
@@ -885,16 +919,19 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<DateTime>("_LastModifiedUtc");
 
                     b.HasKey("Id");
+
 
                     b.ToTable("ArticleSizes");
                 });
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.ArticleSubCollection", b =>
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("Active");
+
 
                     b.Property<string>("Code")
                         .HasMaxLength(255);
@@ -943,16 +980,19 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<DateTime>("_LastModifiedUtc");
 
                     b.HasKey("Id");
+
 
                     b.ToTable("ArticleSubCollections");
                 });
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.ArticleSubCounter", b =>
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("Active");
+
 
                     b.Property<string>("Code")
                         .HasMaxLength(255);
@@ -1001,11 +1041,13 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<DateTime>("_LastModifiedUtc");
 
                     b.HasKey("Id");
+
 
                     b.ToTable("ArticleSubCounters");
                 });
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.ArticleSubProces", b =>
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -1013,11 +1055,13 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<bool>("Active");
 
                     b.Property<string>("Code")
+
                         .HasMaxLength(255);
 
                     b.Property<DateTimeOffset?>("Date");
 
                     b.Property<string>("Description")
+
                         .HasMaxLength(255);
 
                     b.Property<string>("Name")
@@ -1060,10 +1104,12 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
 
                     b.HasKey("Id");
 
+
                     b.ToTable("ArticleSubProcess");
                 });
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.Bank", b =>
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -1071,6 +1117,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<bool>("Active");
 
                     b.Property<string>("Code");
+
 
                     b.Property<string>("Description");
 
@@ -1112,10 +1159,12 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
 
                     b.HasKey("Id");
 
+
                     b.ToTable("Banks");
                 });
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.Budget", b =>
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -1127,6 +1176,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
 
                     b.Property<string>("Name")
                         .HasMaxLength(500);
+
 
                     b.Property<string>("UId")
                         .HasMaxLength(255);
@@ -1221,10 +1271,12 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
 
                     b.HasKey("Id");
 
+
                     b.ToTable("BudgetCurrencies");
                 });
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.Buyer", b =>
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -2309,6 +2361,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                 });
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.Holiday", b =>
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -2643,6 +2696,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                 });
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.MachineSpinningModel", b =>
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -2941,6 +2995,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                     b.Property<DateTime>("_LastModifiedUtc");
 
                     b.HasKey("Id");
+
 
                     b.HasIndex("ModuleId");
 
@@ -4005,6 +4060,7 @@ namespace Com.DanLiris.Service.Core.Lib.Migrations
                         .HasForeignKey("ModuleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
+
 
             modelBuilder.Entity("Com.DanLiris.Service.Core.Lib.Models.ProductSPPProperty", b =>
                 {

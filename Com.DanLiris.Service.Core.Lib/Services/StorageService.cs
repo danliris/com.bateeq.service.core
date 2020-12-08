@@ -83,6 +83,7 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             return Tuple.Create(Data, TotalData, OrderDictionary, SelectedFields);
         }
 
+
         public Tuple<List<StorageViewModel>, int, Dictionary<string, string>> GetDestination(int Page = 1, int Size = 25, string Order = "{}", List<string> select = null, string Keyword = null, string Filter = "{}")
         {
 
@@ -292,5 +293,6 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             var storage = DbSet.Where(x => x.Code == Code).FirstOrDefault();
             return storage;
         }
+
     }
 }

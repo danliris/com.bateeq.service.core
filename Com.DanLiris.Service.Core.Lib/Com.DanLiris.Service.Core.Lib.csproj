@@ -27,7 +27,9 @@
     <PackageReference Include="Moq" Version="4.8.2" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.7.12" />
+
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.2" />
+
   </ItemGroup>
 
 </Project>

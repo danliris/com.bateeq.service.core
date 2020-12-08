@@ -7,7 +7,9 @@ using Com.DanLiris.Service.Core.Lib;
 using System.Threading.Tasks;
 using System;
 using System.Net;
+
 using System.Collections.Generic;
+
 
 namespace Com.DanLiris.Service.Core.WebApi.Controllers.v1.BasicControllers
 {
@@ -17,11 +19,13 @@ namespace Com.DanLiris.Service.Core.WebApi.Controllers.v1.BasicControllers
     public class StoragesController : BasicController<StorageService, Storage, StorageViewModel, CoreDbContext>
     {
         private new static readonly string ApiVersion = "1.0";
+
         StorageService service;
 
         public StoragesController(StorageService service) : base(service, ApiVersion)
         {
             this.service = service;
+
         }
 
         [HttpGet("by-storage-name")]
@@ -148,5 +152,6 @@ namespace Com.DanLiris.Service.Core.WebApi.Controllers.v1.BasicControllers
                 return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
             }
         }
+
     }
 }
