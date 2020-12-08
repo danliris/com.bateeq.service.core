@@ -44,7 +44,7 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             List<string> SelectedFields = new List<string>()
             {
                  "Id","code", "name", "description","address","city","closedDate","monthlyTotalCost","OnlineOffline","openedDate",
-                 "pic","phone","salesCapital","SalesCategory","salesTarget","status","storeArea","StoreCategory","storeWide","Longitude","Latitude"
+                 "Pic","Phone","salesCapital","SalesCategory","salesTarget","status","storeArea","StoreCategory","storeWide","Longitude","Latitude"
             };
 
             Query = Query
@@ -59,8 +59,9 @@ namespace Com.DanLiris.Service.Core.Lib.Services
                     Status = b.Status,
                     SalesCategory = b.SalesCategory,
                     Longitude = b.Longitude,
-                    Latitude = b.Latitude
-                    
+                    Latitude = b.Latitude,
+                    Pic = b.Pic,
+                    Phone = b.Phone
                 });
 
             /* Order */
@@ -123,6 +124,8 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             seasonVM.storeArea = season.StoreArea;
             seasonVM.storeCategory = season.StoreCategory;
             seasonVM.storeWide = season.StoreWide;
+            seasonVM.longitude = season.Longitude;
+            seasonVM.latitude = season.Latitude;
 
             return seasonVM;
         }
@@ -159,6 +162,8 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             season.StoreArea = seasonVM.storeArea;
             season.StoreCategory = seasonVM.storeCategory;
             season.StoreWide = seasonVM.storeWide;
+            season.Longitude = seasonVM.longitude;
+            season.Latitude = seasonVM.latitude;
 
             return season;
         }
