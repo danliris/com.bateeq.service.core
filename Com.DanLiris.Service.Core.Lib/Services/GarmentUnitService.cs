@@ -43,7 +43,7 @@ namespace Com.DanLiris.Service.Core.Lib.Services
 			{
 				"Id", "Code", "Division", "Name"
 			};
-			IEnumerable<string> unit = new string[] { "C2A", "C2B", "C2C", "C1A", "C1B" };
+			IEnumerable<string> unit = new string[] { "E05", "C2A", "C2B", "C2C", "C1A", "C1B" };
 			Query = from a in Query
 					where (unit.Contains(a.Code))
 					select new Unit {

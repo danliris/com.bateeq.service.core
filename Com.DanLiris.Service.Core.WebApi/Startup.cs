@@ -2,6 +2,8 @@
 using Com.DanLiris.Service.Core.Lib;
 using Com.DanLiris.Service.Core.Lib.Helpers.IdentityService;
 using Com.DanLiris.Service.Core.Lib.Helpers.ValidateService;
+using Com.DanLiris.Service.Core.Lib.Interfaces;
+
 using Com.DanLiris.Service.Core.Lib.Services;
 using Com.DanLiris.Service.Core.Lib.Services.Account_and_Roles;
 using Com.DanLiris.Service.Core.Lib.Services.MachineSpinning;
@@ -37,6 +39,14 @@ namespace Com.DanLiris.Service.Core.WebApi
                 .AddScoped<IIdentityService, IdentityService>()
                 .AddScoped<IValidateService, ValidateService>();
         }
+
+        private void RegisterEndPoint()
+        {
+
+            Com.DanLiris.Service.Core.Lib.Helpers.APIEndpoint.StorageAccountName = Configuration.GetValue<string>("StorageAccountName") ?? Configuration["StorageAccountName"];
+            Com.DanLiris.Service.Core.Lib.Helpers.APIEndpoint.StorageAccountKey = Configuration.GetValue<string>("StorageAccountKey") ?? Configuration["StorageAccountKey"];
+        }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -80,6 +90,7 @@ namespace Com.DanLiris.Service.Core.WebApi
                 .AddScoped<StandardTestsService>()
                 .AddScoped<LampStandardService>()
                 .AddScoped<PermissionService>()
+                .AddTransient<CardTypeService>()
                 .AddScoped<ColorTypeService>()
                 .AddScoped<RolesService>()
                 .AddScoped<GarmentProductService>()
@@ -91,10 +102,28 @@ namespace Com.DanLiris.Service.Core.WebApi
                 .AddScoped<StandardMinuteValueService>()
                 .AddTransient<IMachineSpinningService, MachineSpinningService>()
                 .AddScoped<RolesService>()
-                .AddScoped<SizeService>();
+                .AddScoped<SizeService>()
+                .AddTransient<ArticleCategoryService>()
+                .AddTransient<ArticleMaterialService>()
+                .AddTransient<ArticleProcesService>()
+                .AddTransient<ArticleMaterialCompositionService>()
+                .AddTransient<ArticleCollectionService>()
+                .AddTransient<ArticleSeasonService>()
+                .AddTransient<ArticleCounterService>()
+                .AddTransient<ArticleSubCounterService>()
+                .AddTransient<ItemService>()
+                .AddTransient<DivisionService>()
+                .AddTransient<ArticleColorService>()
+                .AddTransient<StorageService>()
+                .AddTransient<ExpeditionService>()
+                .AddTransient<IAzureImageService, AzureImageService>()
+                .AddTransient<StoreService>()
+                .AddTransient<BankService>()
+                .AddTransient<ModuleService>();
 
 
             RegisterServices(services);
+            RegisterEndPoint();
 
             services
                 .AddApiVersioning(options =>
