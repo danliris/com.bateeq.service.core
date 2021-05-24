@@ -92,6 +92,7 @@ namespace Com.DanLiris.Service.Core.Lib.Services
 
             return Tuple.Create(Data, TotalData, OrderDictionary, SelectedFields);
         }
+
         public StoreViewModel MapToViewModel(Store season)
         {
             StoreViewModel seasonVM = new StoreViewModel();
@@ -183,6 +184,19 @@ namespace Com.DanLiris.Service.Core.Lib.Services
                          where a.StoreCategory.Contains((string.IsNullOrWhiteSpace(category) ? a.StoreCategory : category))
                          select a).ToListAsync();
             return store;
+        }
+
+        public List<Store> GetNearestStoreByCity(string code)
+        {
+            var store = (from b in DbContext.Stores
+                         where b.Code == (string.IsNullOrWhiteSpace(code) ? b.Code : code)
+                         select b).FirstOrDefault();
+
+            var storeList = (from b in DbContext.Stores
+                             where b.City == (string.IsNullOrWhiteSpace(store.City) ? b.City : store.City)
+                             select b).ToList();
+
+            return storeList;
         }
 
 

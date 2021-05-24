@@ -27,13 +27,7 @@ namespace Com.DanLiris.Service.Core.WebApi.Controllers.v1.BasicControllers
         {
             try
             {
-
-                // service.Username = User.Claims.Single(p => p.Type.Equals("username")).Value;
-
                 List<Store> Data = await service.GetStoreByCategory(category);
-
-
-
                 Dictionary<string, object> Result =
                     new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
                     .Ok(Data);
@@ -54,13 +48,7 @@ namespace Com.DanLiris.Service.Core.WebApi.Controllers.v1.BasicControllers
         {
             try
             {
-
-                // service.Username = User.Claims.Single(p => p.Type.Equals("username")).Value;
-
                 Store Data = await service.GetStoreByCode(code);
-
-
-
                 Dictionary<string, object> Result =
                     new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
                     .Ok(Data);
@@ -80,13 +68,28 @@ namespace Com.DanLiris.Service.Core.WebApi.Controllers.v1.BasicControllers
         {
             try
             {
-
-                // service.Username = User.Claims.Single(p => p.Type.Equals("username")).Value;
-
                 StoreStorageViewModel Data = await service.GetStoreStorageByCode(code);
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
+                    .Ok(Data);
 
+                return Ok(Result);
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
 
-
+        [HttpGet("nearest-store")]
+        public async Task<IActionResult> GetStoragebyCity(string code)
+        {
+            try
+            {
+                List<Store> Data = service.GetNearestStoreByCity(code);
                 Dictionary<string, object> Result =
                     new ResultFormatter(ApiVersion, General.OK_STATUS_CODE, General.OK_MESSAGE)
                     .Ok(Data);
