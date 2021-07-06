@@ -282,7 +282,7 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             item.Uom = itemVM.dataDestination[0].Uom;
             item.Size = itemVM.dataDestination[0].Size;
             item.DomesticCOGS = itemVM.DomesticCOGS;
-            item.DomesticSale = item.DomesticSale;
+            item.DomesticSale = itemVM.DomesticSale;
             item.InternationalSale = itemVM.InternationalSale;
             item.ArticleRealizationOrder = itemVM.dataDestination[0].ArticleRealizationOrder;
             if (!Equals(itemVM.process, null))
