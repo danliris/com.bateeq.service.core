@@ -327,13 +327,6 @@ namespace Com.DanLiris.Service.Core.WebApi.Controllers.v1.BasicControllers
                     .Ok();
                 return Created(String.Concat(HttpContext.Request.Path, "/", model.Id), Result);
             }
-            catch (ServiceValidationExeption e)
-            {
-                Dictionary<string, object> Result =
-                    new ResultFormatter(ApiVersion, General.BAD_REQUEST_STATUS_CODE, General.BAD_REQUEST_MESSAGE)
-                    .Fail(e);
-                return BadRequest(Result);
-            }
             catch (Exception e)
             {
                 Dictionary<string, object> Result =
