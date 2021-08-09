@@ -310,5 +310,31 @@ namespace Com.DanLiris.Service.Core.WebApi.Controllers.v1.BasicControllers
             }
         }
 
+        [HttpPost("item")]
+        public async Task<IActionResult> PostItem([FromBody] ItemViewModelUsername ViewModel)
+        {
+            try
+            {
+                Item model = Service.ItemMapToModel(ViewModel);
+
+                Service.Username = ViewModel.Username;
+                Service.Token = ViewModel.Token;
+
+                await Service.CreateModel(model);
+
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.CREATED_STATUS_CODE, General.OK_MESSAGE)
+                    .Ok();
+                return Created(String.Concat(HttpContext.Request.Path, "/", model.Id), Result);
+            }
+            catch (Exception e)
+            {
+                Dictionary<string, object> Result =
+                    new ResultFormatter(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+                    .Fail();
+                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            }
+        }
+
     }
 }

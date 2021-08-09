@@ -412,6 +412,155 @@ namespace Com.DanLiris.Service.Core.Lib.Services
             return item;
         }
 
+        public Item ItemMapToModel(ItemViewModelUsername itemVM)
+        {
+            Item item = new Item();
+
+            item.Id = itemVM._id;
+            item.UId = itemVM.UId;
+            item._IsDeleted = itemVM._deleted;
+            item.Active = itemVM._active;
+            item._CreatedUtc = itemVM._createdDate;
+            item._CreatedBy = itemVM._createdBy;
+            item._CreatedAgent = itemVM._createAgent;
+            item._LastModifiedUtc = itemVM._updatedDate;
+            item._LastModifiedBy = itemVM._updatedBy;
+            item._LastModifiedAgent = itemVM._updateAgent;
+            item.Code = itemVM.dataDestination[0].code;
+            item.Name = itemVM.dataDestination[0].name;
+            item.Uom = itemVM.dataDestination[0].Uom;
+            item.Size = itemVM.dataDestination[0].Size;
+            item.DomesticCOGS = itemVM.DomesticCOGS;
+            item.DomesticSale = itemVM.DomesticSale;
+            item.InternationalSale = itemVM.InternationalSale;
+            item.ArticleRealizationOrder = itemVM.dataDestination[0].ArticleRealizationOrder;
+            if (!Equals(itemVM.process, null))
+            {
+                item.ArticleProcessId = itemVM.process._id;
+                item.ProcessDocCode = itemVM.process.code;
+                item.ProcessDocName = itemVM.process.name;
+            }
+            else
+            {
+                item.ArticleProcessId = 0;
+                item.ProcessDocCode = null;
+            }
+
+            if (!Equals(itemVM.color, null))
+            {
+                item.ColorCode = itemVM.color.code;
+                item.ArticleColorsId = itemVM.color._id;
+                item.ColorDocName = itemVM.color.name;
+            }
+
+            if (!Equals(itemVM.materials, null))
+            {
+                item.ArticleMaterialsId = itemVM.materials._id;
+                item.MaterialDocCode = itemVM.materials.code;
+                item.MaterialDocName = itemVM.materials.name;
+            }
+            else
+            {
+                item.ArticleMaterialsId = 0;
+                item.MaterialDocCode = null;
+            }
+
+            if (!Equals(itemVM.materialCompositions, null))
+            {
+                item.ArticleMaterialCompositionsId = itemVM.materialCompositions._id;
+                item.MaterialCompositionDocCode = itemVM.materialCompositions.code;
+                item.MaterialCompositionDocName = itemVM.materialCompositions.name;
+            }
+            else
+            {
+                item.ArticleMaterialCompositionsId = 0;
+                item.MaterialCompositionDocCode = null;
+            }
+
+            if (!Equals(itemVM.collections, null))
+            {
+                item.ArticleCollectionsId = itemVM.collections._id;
+                item.CollectionDocCode = itemVM.collections.code;
+                item.CollectionDocName = itemVM.collections.name;
+            }
+            else
+            {
+                item.ArticleCollectionsId = 0;
+                item.CollectionDocCode = null;
+            }
+            if (!Equals(itemVM.collections, null))
+            {
+                item.ArticleCollectionsId = itemVM.collections._id;
+                item.CollectionDocCode = itemVM.collections.code;
+                item.CollectionDocName = itemVM.collections.name;
+            }
+            else
+            {
+                item.ArticleCollectionsId = 0;
+                item.CollectionDocCode = null;
+            }
+
+            if (!Equals(itemVM.seasons, null))
+            {
+                item.ArticleSeasonsId = itemVM.seasons._id;
+                item.SeasonDocCode = itemVM.seasons.code;
+                item.SeasonDocName = itemVM.seasons.name;
+            }
+            else
+            {
+                item.ArticleSeasonsId = 0;
+                item.SeasonDocCode = null;
+            }
+
+            if (!Equals(itemVM.counters, null))
+            {
+                item.ArticleCountersId = itemVM.counters._id;
+                item.CounterDocCode = itemVM.counters.code;
+                item.CounterDocName = itemVM.counters.name;
+            }
+            else
+            {
+                item.ArticleCountersId = 0;
+                item.CounterDocCode = null;
+            }
+
+            if (!Equals(itemVM.subCounters, null))
+            {
+                item.ArticleSubCountersId = itemVM.subCounters._id;
+                item.StyleDocCode = itemVM.subCounters.code;
+                item.StyleDocName = itemVM.subCounters.name;
+            }
+            else
+            {
+                item.ArticleSubCountersId = 0;
+                item.StyleDocCode = null;
+            }
+
+            if (!Equals(itemVM.categories, null))
+            {
+                item.ArticleCategoriesId = itemVM.categories._id;
+                item.CategoryDocCode = itemVM.categories.code;
+                item.CategoryDocName = itemVM.categories.name;
+            }
+            else
+            {
+                item.ArticleCategoriesId = 0;
+                item.CategoryDocCode = null;
+            }
+            item.ImagePath = itemVM.dataDestination[0].ImagePath;
+
+            //item.ProcessDocName = itemVM.ProcessDocName;
+            //item.MaterialDocName = item.MaterialDocName;
+            //item.MaterialCompositionDocName = itemVM.MaterialCompositionDocName;
+            //item.CollectionDocName = itemVM.CollectionDocName;
+            //item.SeasonDocName = itemVM.SeasonDocName;
+            //item.CounterDocName = itemVM.CounterDocName;
+            //item.StyleDocName = itemVM.StyleDocName;
+            //item.CategoryDocName = itemVM.CategoryDocName;
+
+            return item;
+        }
+
         public override async Task<Item> ReadModelById(int Id)
         {
             //base.DbContext.Set<ProductSPPProperty>().Load();
